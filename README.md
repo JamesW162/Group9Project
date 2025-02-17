@@ -6,6 +6,7 @@ to create the data for this model
 This project uses Mediapipe for hand detection and ML model to classify the gestures. 
 The system then uses real -time video input from a camera to detect hand landmarks and predict
 what letter the hand gesture relates to. 
+For example:
 
 ![image](https://github.com/user-attachments/assets/f8b1654a-554f-4194-9add-d3a08eb3a8c6)
 
@@ -16,11 +17,13 @@ what letter the hand gesture relates to.
 to get started, clone this repository and install the dependancies 
 
 `git clone https://github.com/yourusername/hand-gesture-recognition.git`
+
 `cd hand-gesture-recognition`
+
 `pip install -r requirements.txt`
 
 ## The order to run the programs in 
--Initially start by running the **`collect_imags.py`**
+- Initially start by running the **`collect_imags.py`**
     - At the moment it only creates a classe for 3 set of data AKA 3 Letters
     - `number_of_classes = 3`
     - You have to run the q 3 times
