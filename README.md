@@ -10,13 +10,9 @@ what letter the hand gesture relates to.
 ## Installation 
 to get started, clone this repository and install the dependancies 
 
-`
-git clone https://github.com/yourusername/hand-gesture-recognition.git
-
+`git clone https://github.com/yourusername/hand-gesture-recognition.git
 cd hand-gesture-recognition
-
-pip install -r requirements.txt
-`
+pip install -r requirements.txt`
 
 ## The order to run the programs in 
 - initially start by running the `collect_imags.py`
@@ -41,7 +37,8 @@ pip install -r requirements.txt
 
 ## the video tutorial that was followed if further help is needed 
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/MJCSjXepaAM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![Watch the tutorial on YouTube](https://img.youtube.com/vi/MJCSjXepaAM/0.jpg)](https://www.youtube.com/watch?v=MJCSjXepaAM)
+
 
 
 ## Next Week 
