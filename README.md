@@ -7,6 +7,9 @@ This project uses Mediapipe for hand detection and ML model to classify the gest
 The system then uses real -time video input from a camera to detect hand landmarks and predict
 what letter the hand gesture relates to. 
 
+![image](https://github.com/user-attachments/assets/cda696e1-1768-45e0-ab17-ad6f68d20923)
+
+
 ## Installation 
 to get started, clone this repository and install the dependancies 
 
