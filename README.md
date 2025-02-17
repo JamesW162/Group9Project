@@ -3,15 +3,18 @@ At the current moment this is a ALS translator unfortunately it did not allow me
 the data set- git hub panicked because apparently "_100 files is too much_" so its up to you
 to create the data for this model 
 
-this project uses Mediapipe for hand detection and ML model to classify the gestures. 
+This project uses Mediapipe for hand detection and ML model to classify the gestures. 
 The system then uses real -time video input from a camera to detect hand landmarks and predict
 what letter the hand gesture relates to. 
 
 ## Installation 
 to get started, clone this repository and install the dependancies 
+
 `
 git clone https://github.com/yourusername/hand-gesture-recognition.git
+
 cd hand-gesture-recognition
+
 pip install -r requirements.txt
 `
 
@@ -35,6 +38,11 @@ pip install -r requirements.txt
 - I have yet to train it on the full alphabet so no clue if that works
 - we need to figure out how to string the words into sentences
 - This is ASL **not** BSL
+
+## the video tutorial that was followed if further help is needed 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/MJCSjXepaAM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 ## Next Week 
 can we connect this to the pi ASAP :)
