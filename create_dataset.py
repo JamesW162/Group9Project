@@ -36,24 +36,28 @@ for dir_ in os.listdir(DATA_DIR):
         result = hands.process(img_rgb)
         
         if result.multi_hand_landmarks:
-            for hand_landmarks in result.multi_hand_landmarks:
-                # create an array for each image
-                for i in range(len(hand_landmarks.landmark)):
-                    # collect the x and y landmarks to create a long array to train our classifier
-                    x = hand_landmarks.landmark[i].x
-                    y = hand_landmarks.landmark[i].y
-                    data_aux.append(x)
-                    data_aux.append(y)
+            if len(result.multi_hand_landmarks) == 1:
+                # If only one hand, get its landmarks and pad with zeros for the missing hand.
+                hand = result.multi_hand_landmarks[0]
+                for landmark in hand.landmark:
+                    data_aux.extend([landmark.x, landmark.y])
+                data_aux.extend([0.0] * 42)
+            else:
+                # Process only the first two detected hands.
+                for hand in result.multi_hand_landmarks[:2]:
+                    for landmark in hand.landmark:
+                        data_aux.extend([landmark.x, landmark.y])
+        
+            data.append(data_aux)  # the array now represents the image (84 datapoints)
+            labels.append(dir_)  # the directory name becomes the label
 
-            data.append(data_aux)  # the array will represent the image
-            labels.append(dir_)  # the name of the directory of each one of these images
+        # Uncomment to visualize images with drawn landmarks:
+        # drawLandmarks(img_rgb, hand_landmarks)
+        # plt.figure()
+        # plt.imshow(img_rgb)
 
-        # Uncomment if you want to visualize the images with landmarks drawn
-        #drawLandmarks(img_rgb, hand_landmarks)
-        #plt.figure()
-        #plt.imshow(img_rgb)
+# Uncomment if you want to display all images
+# plt.show()
 
-#plt.show()
-
-with open('data.pickle', 'wb') as f:  # pickle is a Python library used to save datasets
+with open('data.pickle', 'wb') as f:  # Save datasets using pickle
     pickle.dump({'data': data, 'labels': labels}, f)
