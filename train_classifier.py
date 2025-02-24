@@ -1,3 +1,4 @@
+import os
 import pickle
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
@@ -6,7 +7,8 @@ from sklearn.metrics import accuracy_score
 import numpy as np
 
 # Specify the full absolute path to the data.pickle file
-data_dict = pickle.load(open('C:/Users/LMACE/OneDrive/Documents/UNIVERSITY/year_2/Group IOT/data.pickle', 'rb'))
+data_pickle_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data.pickle')
+data_dict = pickle.load(open(data_pickle_path, 'rb'))
 
 # check that pickle works uncomment bellow
 #print(data_dict.keys())
