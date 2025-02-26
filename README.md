@@ -16,9 +16,9 @@ For example:
 ## Installation 
 to get started, clone this repository and install the dependancies 
 
-`git clone https://github.com/yourusername/hand-gesture-recognition.git`
+`git clone https://github.com/yourusername/Group9Project.git`
 
-`cd hand-gesture-recognition`
+`cd Group9Project`
 
 `pip install -r requirements.txt`
 
