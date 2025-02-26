@@ -53,4 +53,4 @@ to get started, clone this repository and install the dependancies
 ## Next Week 
 can we connect this to the pi ASAP :)
 
-
+Pi can't run it, will have to try linking to a laptop/server via ThingsBoard. I hope that can work
