@@ -52,9 +52,21 @@ to get started, clone this repository and install the dependancies
 
 ## Raspbery pi connection 
 After further research the raspbery pi runs on version 3.7 and the Mediapipe library is not compatable with this this version. :)
-Therefore PLANS HAVE CHANGED!!! refere to the image bellow.
+
+SO... with this "fun" development we have 2 options:
+
+#### 1. Factory reset the raspberry pi and see it we can update the whole pi
+   https://www.geeksforgeeks.org/how-to-upgrade-raspberry-pi-os/
+
+   we tried to update the version of python on the pi for several hours and event the lab techs came to the conclusion we can't with this version of pi we would need to update the whole pi so if one of the pis wants to try this extreeme measure. 
+
+#### 2. Do the proessing on the cloud and send it back.
+As seen bellow the raspberry pi will collect the image data and feed it to the things board. This will then trigger an event and run a python script on something like "AWS Cloud based Lambda" - we have yet to figure out what service we will use. This will trigger the computer vision program. Finally we will then feed the data to both a front end website and back to the raspbery pi to output to audio. 
 ![image](https://github.com/user-attachments/assets/07492b59-955f-418c-858c-ce19d5b94ed3)
-The raspberry pi will collect the image data and feed it to the things board which will then trigger an event and run a "python AWS Cloud based Lambda" which will trigger the computer vision program this then will feed the data to both a front end website and back to the cloud. 
+
+HOWEVER... both these thes options come with new risks.
+
+Option 1 we just straight up dont know if it will work and wever already wasted 10+ hours on it so try it if you want. Option 2 is long and conveluted and were are going to have to figure out how to encrypt the images on the web to maintin the security. 
 
 ## Next Week 
 We need to get the program and the Pi intergrated together.
