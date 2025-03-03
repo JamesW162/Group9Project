@@ -1,11 +1,12 @@
 # SIGN LANGUAGE TRANSLATOR
-At the current moment this is a ALS translator unfortunately it did not allow me to upload
+At the current moment this is a BSL translator unfortunately it did not allow me to upload
 the data set- git hub panicked because apparently "_100 files is too much_" so its up to you
 to create the data for this model 
 
 This project uses Mediapipe for hand detection and ML model to classify the gestures. 
 The system then uses real -time video input from a camera to detect hand landmarks and predict
 what letter the hand gesture relates to. 
+It is currently built using version 3.11.9 of python.
 For example:
 
 ![image](https://github.com/user-attachments/assets/f8b1654a-554f-4194-9add-d3a08eb3a8c6)
@@ -38,10 +39,9 @@ to get started, clone this repository and install the dependancies
     - `labels_dict = {0: 'A', 1: 'B', 2: 'L'}`
  
 ## Important to note
-- The model **_panics_** if there is more than 1 hand and shuts down really messily
-- I have yet to train it on the full alphabet so no clue if that works
 - We need to figure out how to string the words into sentences
-- This is ASL **not** BSL
+- We need to start figuring out how to 
+
 
 ## the video tutorial that was followed if further help is needed 
 
@@ -50,7 +50,16 @@ to get started, clone this repository and install the dependancies
 ## BSL Letter Chart
 ![image](https://imgs.search.brave.com/DKomfn_cPKzVi7KigGeY5d0Jdn0WK72m8gxgMzOFH6M/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9hY2Nl/c3Nic2wuY29tL3dw/LWNvbnRlbnQvdXBs/b2Fkcy8yMDIyLzEx/LzIuYWNjZXNzYnNs/LUZpbmdlcnNwZWxs/aW5nLXJpZ2h0LWhh/bmQtMS5qcGc)
 
-## Next Week 
-can we connect this to the pi ASAP :)
+## Raspbery pi connection 
+After further research the raspbery pi runs on version 3.7 and the Mediapipe library is not compatable with this this version. :)
+Therefore PLANS HAVE CHANGED!!! refere to the image bellow.
+![image](https://github.com/user-attachments/assets/07492b59-955f-418c-858c-ce19d5b94ed3)
+The raspberry pi will collect the image data and feed it to the things board which will then trigger an event and run a "python AWS Cloud based Lambda" which will trigger the computer vision program this then will feed the data to both a front end website and back to the cloud. 
 
-Pi can't run it, will have to try linking to a laptop/server via ThingsBoard. I hope that can work
+## Next Week 
+We need to get the program and the Pi intergrated together.
+We need to start outputting the letters as text/wprds.
+We need an Auto Correct for the words cause they're inevitably going to be wrong
+We need to collect more data.
+
+
