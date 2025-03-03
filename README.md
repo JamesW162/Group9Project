@@ -66,12 +66,16 @@ As seen bellow the raspberry pi will collect the image data and feed it to the t
 
 HOWEVER... both these thes options come with new risks.
 
-Option 1 we just straight up dont know if it will work and wever already wasted 10+ hours on it so try it if you want. Option 2 is long and conveluted and were are going to have to figure out how to encrypt the images on the web to maintin the security. 
+Option 1 we just straight up dont know if it will work and wever already wasted 10+ hours on trying to update the version of python so this is a last resort so try it if you want. Option 2 is long and conveluted and were are going to have to figure out how to encrypt the images on the web to maintin the security. 
+
+
+## Output 
+The auto correct exitst :)
+
 
 ## Next Week 
 - We need to get the program and the Pi intergrated together.
-- We need to start outputting the letters as text/words.
-- We need an Auto Correct for the words cause they're inevitably going to be wrong
+- We need to start outputting the letters as text/words. 
 - We need to collect more data.
 - someone needs to start build the front end.
 
