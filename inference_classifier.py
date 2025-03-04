@@ -17,7 +17,12 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 
 hands = mp_hands.Hands(static_image_mode=True, max_num_hands=2, min_detection_confidence=0.3)
-labels_dict = {0: 'A', 1: 'B', 2: 'C'}
+#labels_dict = {0: 'Hello1', 1: 'Hello2', 2: 'ThankYou1'}
+labels_dict = {
+    'a': 'A', 'b': 'B', 'c': 'C', 'd': 'D', 'e': 'E', 'f': 'F', 'g': 'G', 'h': 'H', 'i': 'I',
+    'k': 'K', 'l': 'L', 'm': 'M', 'n': 'N', 'o': 'O', 'p': 'P', 'q': 'Q', 'r': 'R', 's': 'S', 't': 'T',
+    'u': 'U', 'v': 'V', 'w': 'W', 'x': 'X', 'y': 'Y', 'z': 'Z'
+}
 
 def drawLandmarks(img, hand_landmarks):
     mp_drawing.draw_landmarks(
@@ -67,11 +72,12 @@ while True:
         x1 = int(min(x_coords) * W) - 10
         y1 = int(min(y_coords) * H) - 10
         x2 = int(max(x_coords) * W) + 10
-        y2 = int(max(y_coords) * H) + 10 
+        y2 = int(max(y_coords) * H) + 10
 
         data_aux_np = np.array(data_aux).reshape(1, -1)  # Ensure array shape is [1,84]
         prediction = model.predict(data_aux_np)
-        predicted_character = labels_dict[int(prediction[0])]
+        predicted_character = labels_dict.get(prediction[0], "Unknown")
+
 
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
         cv2.putText(frame, predicted_character, (x1, y1 - 10),
