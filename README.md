@@ -17,7 +17,7 @@ For example:
 ## Installation 
 to get started, clone this repository and install the dependancies 
 
-`git clone https://github.com/yourusername/Group9Project.git`
+`git clone https://github.com/JamesW162/Group9Project`
 
 `cd Group9Project`
 
