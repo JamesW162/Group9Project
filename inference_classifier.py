@@ -10,6 +10,7 @@ model_dict = pickle.load(open(model_path, 'rb'))
 model = model_dict['model']
 
 cap = cv2.VideoCapture(0)  # Use 0 for default camera, or adjust the index if needed.
+previous_characters = []
 
 # Initialize Mediapipe
 mp_hands = mp.solutions.hands
@@ -77,6 +78,20 @@ while True:
         data_aux_np = np.array(data_aux).reshape(1, -1)  # Ensure array shape is [1,84]
         prediction = model.predict(data_aux_np)
         predicted_character = labels_dict.get(prediction[0], "Unknown")
+
+
+
+        #temp output
+        #print(predicted_character)
+        previous_characters.append(predicted_character)
+        if len(previous_characters) == 10:
+            print(previous_characters)
+        else:
+            pass
+        if len(previous_characters) == 10:
+            previous_characters.pop(0)
+        #print(previous_characters)
+
 
 
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
