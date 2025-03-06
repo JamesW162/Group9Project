@@ -110,7 +110,7 @@ while True:
                 current_time = time.time()
 
                 # Ensure the detected letter is not immediately repeated
-                if most_frequent_gesture != previous_letter or (current_time - last_time) > 1.5:
+                if most_frequent_gesture != previous_letter or (current_time - last_time) > 1:
                     print("Detected letter:", most_frequent_gesture)
                     output_word.append(most_frequent_gesture)  # Store for word construction
                     previous_letter = most_frequent_gesture
