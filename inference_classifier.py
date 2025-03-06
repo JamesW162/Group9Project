@@ -3,6 +3,7 @@ import cv2
 import mediapipe as mp
 import pickle
 import numpy as np
+from collections import Counter
 
 # Build a universal path to the model file located in the same directory as this script.
 model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'model.p')
@@ -33,6 +34,18 @@ def drawLandmarks(img, hand_landmarks):
         mp_drawing_styles.get_default_hand_landmarks_style(),
         mp_drawing_styles.get_default_hand_connections_style()
     )
+
+def get_most_frequent_gesture(gesture_list, threshold=0.9):
+    # Count occurrences of each alphabet
+    counts = Counter(gesture_list)
+    total_gestures = len(gesture_list)
+    
+    # Check if any gesture appears at least 9/10 times
+    for gesture, count in counts.items():
+        if count / total_gestures >= threshold:
+            return gesture  # Return the dominant gesture
+    
+    return None  # No gesture meets the threshold
 
 while True:
     data_aux = []
@@ -86,10 +99,16 @@ while True:
         previous_characters.append(predicted_character)
         if len(previous_characters) == 10:
             print(previous_characters)
+            most_frequent_gesture = get_most_frequent_gesture(gesture_list)
+
+# Display the output if a dominant gesture is found
+            if most_frequent_gesture:
+                print("Detected letter:", most_frequent_gesture)
+            else:
+                print("No clear gesture detected")
+            previous_characters.pop(0)
         else:
             pass
-        if len(previous_characters) == 10:
-            previous_characters.pop(0)
         #print(previous_characters)
 
 
