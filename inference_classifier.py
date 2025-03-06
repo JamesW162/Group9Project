@@ -11,7 +11,7 @@ model_dict = pickle.load(open(model_path, 'rb'))
 model = model_dict['model']
 
 cap = cv2.VideoCapture(0)  # Use 0 for default camera, or adjust the index if needed.
-previous_characters = []
+gesture_list = []
 
 # Initialize Mediapipe
 mp_hands = mp.solutions.hands
@@ -96,17 +96,18 @@ while True:
 
         #temp output
         #print(predicted_character)
-        previous_characters.append(predicted_character)
-        if len(previous_characters) == 10:
-            print(previous_characters)
+        gesture_list.append(predicted_character)
+        if len(gesture_list) == 10:
+            #print(gesture_list)
             most_frequent_gesture = get_most_frequent_gesture(gesture_list)
 
 # Display the output if a dominant gesture is found
             if most_frequent_gesture:
                 print("Detected letter:", most_frequent_gesture)
             else:
-                print("No clear gesture detected")
-            previous_characters.pop(0)
+                pass
+                #print("No clear gesture detected")
+            gesture_list.pop(0)
         else:
             pass
         #print(previous_characters)
