@@ -15,11 +15,15 @@ For example:
 
 
 ## Installation 
-to get started, clone this repository and install the dependancies 
+to get started, clone this repository, set up a virtual environment and install the dependancies 
 
 `git clone https://github.com/JamesW162/Group9Project`
 
 `cd Group9Project`
+
+`python -m venv myenv`
+
+`myenv\Scripts\activate`
 
 `pip install -r requirements.txt`
 
