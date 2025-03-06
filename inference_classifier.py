@@ -4,6 +4,7 @@ import mediapipe as mp
 import pickle
 import numpy as np
 from collections import Counter
+import time
 
 # Build a universal path to the model file located in the same directory as this script.
 model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'model.p')
@@ -12,6 +13,9 @@ model = model_dict['model']
 
 cap = cv2.VideoCapture(0)  # Use 0 for default camera, or adjust the index if needed.
 gesture_list = []
+output_word = []  # Stores letters to construct words
+previous_letter = None  # Stores the last displayed letter
+last_time = time.time()  # Tracks the last update time
 
 # Initialize Mediapipe
 mp_hands = mp.solutions.hands
@@ -103,15 +107,16 @@ while True:
 
 # Display the output if a dominant gesture is found
             if most_frequent_gesture:
-                print("Detected letter:", most_frequent_gesture)
-            else:
-                pass
-                #print("No clear gesture detected")
-            gesture_list.pop(0)
-        else:
-            pass
-        #print(previous_characters)
+                current_time = time.time()
 
+                # Ensure the detected letter is not immediately repeated
+                if most_frequent_gesture != previous_letter or (current_time - last_time) > 1.5:
+                    print("Detected letter:", most_frequent_gesture)
+                    output_word.append(most_frequent_gesture)  # Store for word construction
+                    previous_letter = most_frequent_gesture
+                    last_time = current_time
+
+            gesture_list.pop(0)
 
 
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
@@ -124,3 +129,5 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
+
+print("\nConstructed Word:", "".join(output_word))
