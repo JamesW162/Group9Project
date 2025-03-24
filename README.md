@@ -1,4 +1,5 @@
 # SIGN LANGUAGE TRANSLATOR
+![image](https://github.com/JamesW162/Group9Project/blob/main/logo.png)
 At the current moment this is a BSL translator unfortunately it did not allow me to upload
 the data set- GitHub panicked because apparently "_100 files is too much_" so its up to you
 to create the data for this model 
