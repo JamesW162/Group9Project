@@ -5,25 +5,46 @@ import pickle
 import numpy as np
 from collections import Counter
 import time
+from flask import Flask, jsonify, render_template
+import threading
 
-# Build a universal path to the model file located in the same directory as this script.
+# Flask app setup
+app = Flask(__name__)
+output_word = []  # Stores letters to construct words
+
+@app.route('/get_output_word', methods=['GET'])
+def get_output_word():
+    return jsonify({'word': "".join(output_word)})
+
+@app.route('/')
+def index():
+    return render_template('index.html')  # Serve the webpage
+
+# Run Flask in a separate thread
+def run_flask():
+    app.run(debug=True, use_reloader=False)
+
+flask_thread = threading.Thread(target=run_flask)
+flask_thread.daemon = True
+flask_thread.start()
+
+# Universal path to the model file
 model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'model.p')
 model_dict = pickle.load(open(model_path, 'rb'))
 model = model_dict['model']
 
-cap = cv2.VideoCapture(0)  # Use 0 for default camera, or adjust the index if needed.
+cap = cv2.VideoCapture(0)
 gesture_list = []
-output_word = []  # Stores letters to construct words
-previous_letter = None  # Stores the last displayed letter
-last_time = time.time()  # Tracks the last update time
+previous_letter = None
+last_time = time.time()
 
-# Initialize Mediapipe
+# Mediapipe initialization
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 
 hands = mp_hands.Hands(static_image_mode=True, max_num_hands=2, min_detection_confidence=0.3)
-#labels_dict = {0: 'Hello1', 1: 'Hello2', 2: 'ThankYou1'}
+
 labels_dict = {
     'a': 'A', 'b': 'B', 'c': 'C', 'd': 'D', 'e': 'E', 'f': 'F', 'g': 'G', 'h': 'H', 'i': 'I',
     'k': 'K', 'l': 'L', 'm': 'M', 'n': 'N', 'o': 'O', 'p': 'P', 'q': 'Q', 'r': 'R', 's': 'S', 't': 'T',
@@ -40,16 +61,12 @@ def drawLandmarks(img, hand_landmarks):
     )
 
 def get_most_frequent_gesture(gesture_list, threshold=0.9):
-    # Count occurrences of each alphabet
     counts = Counter(gesture_list)
     total_gestures = len(gesture_list)
-    
-    # Check if any gesture appears at least 9/10 times
     for gesture, count in counts.items():
         if count / total_gestures >= threshold:
-            return gesture  # Return the dominant gesture
-    
-    return None  # No gesture meets the threshold
+            return gesture
+    return None
 
 while True:
     data_aux = []
@@ -63,61 +80,47 @@ while True:
     H, W, _ = frame.shape
     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     result = hands.process(frame_rgb)
-    
+
     predicted_character = ""
     if result.multi_hand_landmarks:
-        # Draw landmarks for up to 2 hands.
         for hand_landmarks in result.multi_hand_landmarks[:2]:
             drawLandmarks(frame, hand_landmarks)
-        
-        # Process landmarks: if one hand detected, pad with zeros.
+
         if len(result.multi_hand_landmarks) == 1:
             hand = result.multi_hand_landmarks[0]
             for landmark in hand.landmark:
                 data_aux.extend([landmark.x, landmark.y])
                 x_coords.append(landmark.x)
                 y_coords.append(landmark.y)
-            data_aux.extend([0.0] * 42)  # Pad for the missing hand.
+            data_aux.extend([0.0] * 42)
         else:
-            # Process the first 2 hands.
             for hand in result.multi_hand_landmarks[:2]:
                 for landmark in hand.landmark:
                     data_aux.extend([landmark.x, landmark.y])
                     x_coords.append(landmark.x)
                     y_coords.append(landmark.y)
 
-        # Calculate bounding box over all landmarks.
         x1 = int(min(x_coords) * W) - 10
         y1 = int(min(y_coords) * H) - 10
         x2 = int(max(x_coords) * W) + 10
         y2 = int(max(y_coords) * H) + 10
 
-        data_aux_np = np.array(data_aux).reshape(1, -1)  # Ensure array shape is [1,84]
+        data_aux_np = np.array(data_aux).reshape(1, -1)
         prediction = model.predict(data_aux_np)
         predicted_character = labels_dict.get(prediction[0], "Unknown")
 
-
-
-        #temp output
-        #print(predicted_character)
         gesture_list.append(predicted_character)
         if len(gesture_list) == 10:
-            #print(gesture_list)
             most_frequent_gesture = get_most_frequent_gesture(gesture_list)
 
-# Display the output if a dominant gesture is found
             if most_frequent_gesture:
                 current_time = time.time()
-
-                # Ensure the detected letter is not immediately repeated
                 if most_frequent_gesture != previous_letter or (current_time - last_time) > 1:
-                    print("Detected letter:", most_frequent_gesture)
-                    output_word.append(most_frequent_gesture)  # Store for word construction
+                    output_word.append(most_frequent_gesture)
                     previous_letter = most_frequent_gesture
                     last_time = current_time
 
             gesture_list.pop(0)
-
 
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
         cv2.putText(frame, predicted_character, (x1, y1 - 10),
