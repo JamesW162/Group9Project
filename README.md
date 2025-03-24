@@ -29,6 +29,11 @@ to get started, clone this repository, set up a virtual environment and install 
 
 `pip install -r requirements.txt`
 
+`mkdir templates`
+
+
+NOTE PLEASE PUT THE `index.html` AND `logo.png` INTO A FOLDER CALLED `templates` my computer wouldnt let me upload the file for a wierd reason.
+
 ## The order to run the programs in 
 - Initially start by running the **`collect_images.py`**
     - At the moment it only creates a class for 3 set of data AKA 3 Letters
