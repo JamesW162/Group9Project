@@ -5,40 +5,28 @@ import pickle
 import numpy as np
 from collections import Counter
 import time
-from flask import Flask, jsonify, render_template
-import threading
+import nltk
+from nltk.corpus import words
+import difflib
 
-# Flask app setup
-app = Flask(__name__)
-output_word = []  # Stores letters to construct words
+# Ensure NLTK word corpus is downloaded
+nltk.download('words')
+word_dict = set(word.upper() for word in words.words())
 
-@app.route('/get_output_word', methods=['GET'])
-def get_output_word():
-    return jsonify({'word': "".join(output_word)})
-
-@app.route('/')
-def index():
-    return render_template('index.html')  # Serve the webpage
-
-# Run Flask in a separate thread
-def run_flask():
-    app.run(debug=True, use_reloader=False)
-
-flask_thread = threading.Thread(target=run_flask)
-flask_thread.daemon = True
-flask_thread.start()
-
-# Universal path to the model file
+# Build a universal path to the model file located in the same directory as this script.
 model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'model.p')
 model_dict = pickle.load(open(model_path, 'rb'))
 model = model_dict['model']
 
 cap = cv2.VideoCapture(0)
 gesture_list = []
+current_input = ""
+detected_words = []
 previous_letter = None
 last_time = time.time()
+last_detected_time = time.time()
 
-# Mediapipe initialization
+# Initialize Mediapipe
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -67,6 +55,9 @@ def get_most_frequent_gesture(gesture_list, threshold=0.9):
         if count / total_gestures >= threshold:
             return gesture
     return None
+
+def get_word_suggestions(fragment, dictionary, num=3):
+    return difflib.get_close_matches(fragment, dictionary, n=num, cutoff=0.6)
 
 while True:
     data_aux = []
@@ -112,19 +103,45 @@ while True:
         gesture_list.append(predicted_character)
         if len(gesture_list) == 10:
             most_frequent_gesture = get_most_frequent_gesture(gesture_list)
-
             if most_frequent_gesture:
                 current_time = time.time()
                 if most_frequent_gesture != previous_letter or (current_time - last_time) > 1:
-                    output_word.append(most_frequent_gesture)
+                    current_input += most_frequent_gesture.upper()
+                    print("Current Input Buffer:", current_input)
                     previous_letter = most_frequent_gesture
                     last_time = current_time
-
+                    last_detected_time = current_time
             gesture_list.pop(0)
 
+        # Display predicted character
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
         cv2.putText(frame, predicted_character, (x1, y1 - 10),
                     cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 255, 0), 3, cv2.LINE_AA)
+
+    # Display live word suggestions
+    suggestions = get_word_suggestions(current_input, word_dict)
+    if suggestions:
+        suggestion_text = "Suggestions: " + ", ".join(suggestions)
+        current_text = "Current Input: " + " ".join(current_input)
+        cv2.putText(frame, suggestion_text, (50, 100),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 165, 255), 2, cv2.LINE_AA)
+        cv2.putText(frame, current_text, (50, 150),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 165, 255), 2, cv2.LINE_AA)
+
+    # Finalize word after 5 seconds of inactivity
+    if time.time() - last_detected_time > 5 and current_input:
+        if suggestions:
+            detected_words.append(suggestions[0])
+            print("Finalized Word:", suggestions[0])
+        else:
+            detected_words.append(current_input)
+            print("Finalized Word (Raw):", current_input)
+        current_input = ""
+        last_detected_time = time.time()
+
+    # Display full constructed sentence
+    cv2.putText(frame, " ".join(detected_words), (50, 50),
+                cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
 
     cv2.imshow('frame', frame)
     if cv2.waitKey(25) & 0xFF == ord('e'):
@@ -132,5 +149,4 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
-
-print("\nConstructed Word:", "".join(output_word))
+print("\nFinal Constructed Sentence:", " ".join(detected_words))
