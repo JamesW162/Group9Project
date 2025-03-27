@@ -8,12 +8,33 @@ import time
 import nltk
 from nltk.corpus import words
 import difflib
+from flask import Flask, jsonify, render_template
+import threading
 
-# Ensure NLTK word corpus is downloaded
+# Download NLTK word corpus
 nltk.download('words')
 word_dict = set(word.upper() for word in words.words())
 
-# Build a universal path to the model file located in the same directory as this script.
+# Flask app setup
+app = Flask(__name__)
+
+@app.route('/get_output_word', methods=['GET'])
+def get_output_word():
+    return jsonify({"\nFinal Constructed Sentence:", " ".join(detected_words)})
+
+@app.route('/')
+def index():
+    return render_template('index.html')  # Serve the webpage
+
+# Run Flask in a separate thread
+def run_flask():
+    app.run(debug=True, use_reloader=False)
+
+flask_thread = threading.Thread(target=run_flask)
+flask_thread.daemon = True
+flask_thread.start()
+
+# Universal path to the model file
 model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'model.p')
 model_dict = pickle.load(open(model_path, 'rb'))
 model = model_dict['model']
