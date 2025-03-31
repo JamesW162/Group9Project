@@ -20,7 +20,9 @@ app = Flask(__name__)
 
 @app.route('/get_output_word', methods=['GET'])
 def get_output_word():
-    return jsonify({"\nFinal Constructed Sentence:", " ".join(detected_words)})
+    output_word = " ".join(detected_words)
+    print("\nFinal Constructed Sentence:", output_word)
+    return jsonify({"word": output_word})
 
 @app.route('/')
 def index():
@@ -149,8 +151,8 @@ while True:
         cv2.putText(frame, current_text, (50, 150),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 165, 255), 2, cv2.LINE_AA)
 
-    # Finalize word after 5 seconds of inactivity
-    if time.time() - last_detected_time > 5 and current_input:
+    # Finalize word after 4 seconds of inactivity
+    if time.time() - last_detected_time > 4 and current_input:
         if suggestions:
             detected_words.append(suggestions[0])
             print("Finalized Word:", suggestions[0])
