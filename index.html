@@ -1,90 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Gesture Output</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-        }
-        header {
-            background-color: #3f848a;
-            color: white;
-            padding: 10px 0;
-        }
-        header img {
-            height: 100px;
-            width: 400px;
-        }
-        .container {
-            margin-top: 50px;
-        }
-        .loading {
-            font-size: 20px;
-            font-weight: bold;
-            color: #555;
-        }
-        .progress-bar {
-            width: 80%;
-            height: 10px;
-            background-color: #f3f3f3;
-            border-radius: 5px;
-            overflow: hidden;
-            margin: 50px auto;
-            display: none; /* Initially hidden */
-        }
-        .progress {
-            height: 100%;
-            width: 0;
-            background-color: #68a4bc;
-            animation: load 10s ease-in-out infinite;
-        }
-        @keyframes load {
-            0% { width: 0; }
-            50% { width: 100%; }
-            100% { width: 0; }
-        }
-    </style>
-    <script>
-        async function fetchWord() {
-            const progressBar = document.querySelector(".progress-bar");
-            const output = document.getElementById("output");
-
-            // Show loading bar if fetching takes longer than 500ms
-            const loadingTimeout = setTimeout(() => {
-                progressBar.style.display = "block";
-            }, 500);
-
-            try {
-                const response = await fetch('/get_output_word');
-                const data = await response.json();
-                output.innerText = data.word;
-            } catch (error) {
-                console.error('Error fetching word:', error);
-            } finally {
-                clearTimeout(loadingTimeout); // Clear the timeout
-                progressBar.style.display = "none"; // Hide the loading bar
-            }
-        }
-
-        setInterval(fetchWord, 1000);
-    </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BSL Translator Stream Viewer</title>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <img src="logo.png" alt="BSL Bridge">
-    </header>
-    <div class="progress-bar">
-        <div class="progress"></div>
-    </div>
-    <div class="container">
-        <h1 class="loading" id="loadingText">Live Gesture Output</h1>
-        <p id="output">Waiting for input...</p>
-    </div>
+<h1>BSL Translator Stream Viewer</h1>
+<div class="controls">
+<label for="streamSelector">Select Stream:</label>
+<select id="streamSelector">
+<option value="">Loading streams...</option>
+</select>
+<button id="loadStreamBtn">Load Stream</button>
+<button id="stopStreamBtn">Stop Viewing</button>
+</div>
+<div id="videoContainer">
+<img id="streamVideo" width="320" height="240" alt="Stream will appear here">
+<div id="streamInfo">
+            No stream selected. Please select a stream from the dropdown above.
+</div>
+</div>
+ 
+    <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<!-- Config and Firebase initialization -->
+<script src="firebase-config.js"></script>
+<!-- Stream viewer application code -->
+<script src="stream-viewer.js"></script>
 </body>
 </html>
