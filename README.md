@@ -63,10 +63,14 @@ to get started, clone this repository, set up a virtual environment and install 
 
 How the code currently connects to the raspberry pi is found in the file `live_stream_pi_code.py` that can be found in the `raspberryPi` folder is through Firebase, a Google backends-as-a-service platform. Data is sent to the firelbase Realtime database and firestore with this configuration.
 
-`FRAME_RATE = 2  # Lower frames per second to avoid database overload
+`FRAME_RATE = 3  # Lower frames per second to avoid database overload DO NOT GO OVER 5 frame rate we do not have the storage and any frame rate higher has no notable difference.
+
 RESOLUTION = (320, 240)  # Lower resolution for better performance with database
+
 QUALITY = 20  # JPEG compression quality (lower = smaller file size)
+
 MAX_STREAM_TIME = 300  # Maximum streaming time in seconds (5 minutes)
+
 STREAM_ID = datetime.now().strftime("%Y%m%d_%H%M%S")  # Unique ID for this stream`
 
 
