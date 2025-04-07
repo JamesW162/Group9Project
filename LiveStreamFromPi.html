@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live BSL Translation Video Stream</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        #videoContainer {
+            width: 100%;
+            margin: 20px 0;
+            position: relative;
+        }
+        #videoFrame {
+            width: 100%;
+            max-width: 640px;
+            border: 1px solid #ddd;
+        }
+        #streamInfo {
+            margin: 20px 0;
+            text-align: left;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-radius: 5px;
+        }
+        #streamSelector {
+            margin: 20px 0;
+        }
+        select {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+        button:hover {
+            background-color: #3367d6;
+        }
+        .status {
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 14px;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        .active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .ended {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BSL Translator Live Stream</h1>
+        
+        <div id="streamSelector">
+            <label for="streamId">Select Stream: </label>
+            <select id="streamId"></select>
+            <button id="connectBtn">Connect</button>
+            <button id="refreshBtn">Refresh Streams</button>
+        </div>
+        
+        <div id="streamInfo">
+            <p>Status: <span id="streamStatus">Not connected</span></p>
+            <p>Resolution: <span id="resolution">-</span></p>
+            <p>Frame Rate: <span id="frameRate">-</span></p>
+            <p>Started: <span id="startTime">-</span></p>
+            <p>Frame Count: <span id="frameCount">-</span></p>
+            <p>Last Update: <span id="lastUpdate">-</span></p>
+        </div>
+        
+        <div id="videoContainer">
+            <img id="videoFrame" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=" alt="Video Stream">
+            <p id="noStreamMessage">No stream data available. Please connect to a stream.</p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    
+    <script>
+        // Firebase configuration - replace with your actual config
+        const firebaseConfig = {
+            apiKey: "AIzaSyAEzhS9bkzcN5-YLuvta9Vm2aYM6DYl2PU",
+            authDomain: "bsltranslator-93f00.firebaseapp.com",
+            databaseURL: "https://bsltranslator-93f00-default-rtdb.europe-west1.firebasedatabase.app/",
+            projectId: "bsltranslator-93f00",
+            storageBucket: "bsltranslator-93f00.appspot.com",
+            messagingSenderId: "547548973040",
+            appId: "1:547548973040:web:4c7b2802aedcf6e84a7f35"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        
+        // DOM elements
+        const streamSelector = document.getElementById('streamId');
+        const connectBtn = document.getElementById('connectBtn');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const videoFrame = document.getElementById('videoFrame');
+        const noStreamMessage = document.getElementById('noStreamMessage');
+        const streamStatus = document.getElementById('streamStatus');
+        const resolution = document.getElementById('resolution');
+        const frameRate = document.getElementById('frameRate');
+        const startTime = document.getElementById('startTime');
+        const frameCount = document.getElementById('frameCount');
+        const lastUpdate = document.getElementById('lastUpdate');
+        
+        // Current stream reference
+        let currentStreamRef = null;
+        let latestFrameRef = null;
+        
+        // Load available streams on page load
+        document.addEventListener('DOMContentLoaded', loadStreams);
+        
+        // Connect button event
+        connectBtn.addEventListener('click', connectToStream);
+        
+        // Refresh streams button event
+        refreshBtn.addEventListener('click', loadStreams);
+        
+        // Load streams from Firebase
+        function loadStreams() {
+            const streamsRef = database.ref('/streams');
+            streamsRef.once('value', (snapshot) => {
+                // Clear previous options
+                streamSelector.innerHTML = '<option value="">Select a stream...</option>';
+                
+                const streams = snapshot.val();
+                if (streams) {
+                    Object.keys(streams).forEach(streamId => {
+                        const option = document.createElement('option');
+                        option.value = streamId;
+                        
+                        // Add status indicator to the stream option
+                        const status = streams[streamId].status || 'unknown';
+                        option.textContent = `${streamId} (${status})`;
+                        
+                        // Add data attributes for more info
+                        if (streams[streamId].started_at) {
+                            const startDate = new Date(streams[streamId].started_at);
+                            option.dataset.startTime = startDate.toLocaleString();
+                        }
+                        
+                        streamSelector.appendChild(option);
+                    });
+                    
+                    console.log('Streams loaded:', Object.keys(streams).length);
+                } else {
+                    console.log('No streams found in database');
+                }
+            }).catch(error => {
+                console.error('Error loading streams:', error);
+                alert('Error loading streams. Check console for details.');
+            });
+        }
+        
+        // Connect to selected stream
+        function connectToStream() {
+            const streamId = streamSelector.value;
+            if (!streamId) {
+                alert('Please select a stream');
+                return;
+            }
+            
+            // Disconnect from previous stream if any
+            if (currentStreamRef) {
+                currentStreamRef.off();
+                latestFrameRef.off();
+            }
+            
+            console.log('Connecting to stream:', streamId);
+            
+            // Reference to stream info
+            currentStreamRef = database.ref(`/streams/${streamId}`);
+            
+            // Get stream info once
+            currentStreamRef.once('value', (snapshot) => {
+                const streamData = snapshot.val();
+                if (!streamData) {
+                    showError('Stream not found');
+                    return;
+                }
+                
+                updateStreamInfo(streamData);
+                
+                // Set up listener for the latest frame
+                latestFrameRef = database.ref(`/streams/${streamId}/latest_frame`);
+                latestFrameRef.on('value', (frameSnapshot) => {
+                    const frameData = frameSnapshot.val();
+                    if (frameData && frameData.data) {
+                        displayFrame(frameData);
+                        noStreamMessage.style.display = 'none';
+                    } else {
+                        console.log('No frame data available');
+                        noStreamMessage.style.display = 'block';
+                    }
+                }, (error) => {
+                    console.error('Error getting frame:', error);
+                    showError('Error retrieving video frames');
+                });
+                
+                // Listen for stream status changes
+                currentStreamRef.child('status').on('value', (statusSnapshot) => {
+                    const status = statusSnapshot.val() || 'unknown';
+                    updateStatus(status);
+                });
+                
+            }).catch(error => {
+                console.error('Error connecting to stream:', error);
+                showError('Failed to connect to stream');
+            });
+        }
+        
+        // Display a video frame
+        function displayFrame(frameData) {
+            // Update the image source with base64 data
+            videoFrame.src = `data:image/jpeg;base64,${frameData.data}`;
+            
+            // Update frame info
+            frameCount.textContent = frameData.frame_number;
+            const updateTime = new Date(frameData.timestamp);
+            lastUpdate.textContent = updateTime.toLocaleString();
+        }
+        
+        // Update stream information display
+        function updateStreamInfo(streamData) {
+            resolution.textContent = streamData.resolution || 'Unknown';
+            frameRate.textContent = streamData.frame_rate || 'Unknown';
+            
+            if (streamData.started_at) {
+                const startDate = new Date(streamData.started_at);
+                startTime.textContent = startDate.toLocaleString();
+            } else {
+                startTime.textContent = 'Unknown';
+            }
+            
+            updateStatus(streamData.status || 'unknown');
+        }
+        
+        // Update status display
+        function updateStatus(status) {
+            streamStatus.textContent = status;
+            streamStatus.className = 'status ' + status;
+            
+            if (status === 'ended') {
+                // Optionally display a message or disable live updates
+                console.log('Stream has ended');
+            }
+        }
+        
+        // Show error message
+        function showError(message) {
+            noStreamMessage.textContent = message;
+            noStreamMessage.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
