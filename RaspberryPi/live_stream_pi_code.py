@@ -7,31 +7,42 @@ from datetime import datetime
 from picamera import PiCamera
 import firebase_admin
 from firebase_admin import credentials, db
- 
 # Configuration
-FRAME_RATE = 2  # Lower frames per second to avoid database overload
+FRAME_RATE = 3  # Lower frames per second to avoid database overload DO NOT GO HIGHER THAN 5
 RESOLUTION = (320, 240)  # Lower resolution for better performance with database
 QUALITY = 20  # JPEG compression quality (lower = smaller file size)
 MAX_STREAM_TIME = 300  # Maximum streaming time in seconds (5 minutes)
 STREAM_ID = datetime.now().strftime("%Y%m%d_%H%M%S")  # Unique ID for this stream
- 
 # Initialize Firebase with explicit parameters
 # Path to your service account key file
 cred_path = '/home/pi/Desktop/codes/bsltranslator-93f00-firebase-adminsdk-fbsvc-e79666a3dd.json'
 cred = credentials.Certificate(cred_path)
- 
 # Define database URL explicitly
 DATABASE_URL = 'https://bsltranslator-93f00-default-rtdb.europe-west1.firebasedatabase.app/'
- 
 # Initialize the app with database URL only
 firebase_admin.initialize_app(cred, {
     'databaseURL': DATABASE_URL
 })
- 
+def delete_all_previous_streams():
+    """Delete all previous stream data from Firebase database"""
+    try:
+        # Get reference to streams
+        streams_ref = db.reference('/streams')
+        # Get all existing streams
+        existing_streams = streams_ref.get()
+        if existing_streams:
+            print(f"Found {len(existing_streams)} previous streams. Deleting...")
+            # Delete each stream
+            for stream_id in existing_streams:
+                if stream_id != STREAM_ID:  # Don't delete current stream if it exists
+                    db.reference(f'/streams/{stream_id}').delete()
+                    print(f"Deleted stream: {stream_id}")
+        print("Previous streams cleanup completed.")
+    except Exception as e:
+        print(f"Error during stream cleanup: {e}")
 # Database reference for stream status and latest frame
 stream_ref = db.reference(f'/streams/{STREAM_ID}')
 latest_frame_ref = db.reference(f'/streams/{STREAM_ID}/latest_frame')
- 
 class VideoStreamer:
     def __init__(self):
         self.camera = None
@@ -51,6 +62,8 @@ class VideoStreamer:
         if self.running:
             print("Stream is already running")
             return
+        # Delete previous streams before starting a new one
+        delete_all_previous_streams()
         self.initialize_camera()
         self.running = True
         self.frame_count = 0
@@ -132,7 +145,6 @@ class VideoStreamer:
         if self.frame_count % 5 == 0:  # Only store every 5th frame in history
             history_ref = db.reference(f'/streams/{STREAM_ID}/frames/frame_{self.frame_count}')
             history_ref.set(frame_info)
- 
 def main():
     streamer = VideoStreamer()
     try:
@@ -148,6 +160,5 @@ def main():
     finally:
         streamer.stop_stream()
         print("Stream ended")
- 
 if __name__ == "__main__":
     main()
