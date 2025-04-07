@@ -82,6 +82,14 @@ After that data gets fetched from the FireBase inside the `LiveStreamFromPi.html
 
 It is important to note the frame rate is awfully slow and we have restricted it to 5 mins of streaming as we are on the free version of firebase and we dont want to start costing ourselves money 
 
+### The cloud process 
+This diagram shows how the camera data flows from the Raspberry Pi to the Firebase. From there the data is sent to a PC/Laptop where the data is locally processed and the model translation  the BSL to text. From there the data has 2 routes:
+
+Processed data sent to the Universities Cloud Webserver which serves as the backend for a website and mobile interface
+2.   The processed data is returned to Things board which is used for output on the raspberry pi’s speaker.
+![image](https://github.com/user-attachments/assets/803f0839-40de-431e-8479-3a3a09b21124)
+
+
 ### Learning Process That Failed
 After further research the Raspberry Pi runs on version 3.7 and the Mediapipe library is not compatible with this this version. :)
 
