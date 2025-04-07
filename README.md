@@ -21,17 +21,14 @@ For example:
 ## Installation 
 to get started, clone this repository, set up a virtual environment and install the dependancies 
 
-`git clone https://github.com/JamesW162/Group9Project`
-
-`cd Group9Project`
-
-`python -m venv myenv`
-
-`myenv\Scripts\activate`
-
-`pip install -r requirements.txt`
-
-`mkdir templates`
+```
+git clone https://github.com/JamesW162/Group9Project
+cd Group9Project
+python -m venv myenv
+myenv\Scripts\activate
+pip install -r requirements.txt
+mkdir templates
+```
 
 
 **NOTE PLEASE PUT THE `index.html` AND `logo.png` INTO A FOLDER CALLED `templates` my computer wouldnt let me upload the file for a wierd reason.**
@@ -64,7 +61,9 @@ to get started, clone this repository, set up a virtual environment and install 
 How the code currently connects to the raspberry pi is found in the file `live_stream_pi_code.py` that can be found in the `raspberryPi` folder is through Firebase, a Google backends-as-a-service platform. Data is sent to the firelbase Realtime database and firestore with this configuration.
 
 ```
-FRAME_RATE = 3  # Lower frames per second to avoid database overload DO NOT GO OVER 5 frame rate we do not have the storage and any frame rate higher has no notable difference.
+FRAME_RATE = 3  # Lower frames per second to avoid database overload
+DO NOT GO OVER 5 frame rate we do not have the storage and any frame rate
+higher has no notable difference.
 
 RESOLUTION = (320, 240)  # Lower resolution for better performance with database
 
