@@ -8,38 +8,11 @@ import time
 import nltk
 from nltk.corpus import words
 import difflib
-from flask import Flask, jsonify, render_template
-import threading
+import requests
 
 # Download NLTK word corpus
 nltk.download('words')
 word_dict = set(word.upper() for word in words.words())
-
-# Flask app setup
-app = Flask(__name__)
-
-@app.route('/get_output_word', methods=['GET'])
-def get_output_word():
-    output_word = " ".join(detected_words)
-    print("\nFinal Constructed Sentence:", output_word)
-    return jsonify({"word": output_word})
-
-@app.route('/')
-def index():
-    return render_template('index.html')  # Serve the webpage
-
-# Run Flask in a separate thread
-def run_flask():
-    app.run(debug=True, use_reloader=False)
-
-flask_thread = threading.Thread(target=run_flask)
-flask_thread.daemon = True
-flask_thread.start()
-
-# Universal path to the model file
-model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'model.p')
-model_dict = pickle.load(open(model_path, 'rb'))
-model = model_dict['model']
 
 cap = cv2.VideoCapture(0)
 gesture_list = []
@@ -81,6 +54,11 @@ def get_most_frequent_gesture(gesture_list, threshold=0.9):
 
 def get_word_suggestions(fragment, dictionary, num=3):
     return difflib.get_close_matches(fragment, dictionary, n=num, cutoff=0.6)
+
+# Universal path to the model file
+model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'model.p')
+model_dict = pickle.load(open(model_path, 'rb'))
+model = model_dict['model']
 
 while True:
     data_aux = []
@@ -136,35 +114,30 @@ while True:
                     last_detected_time = current_time
             gesture_list.pop(0)
 
-        # Display predicted character
-        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
-        cv2.putText(frame, predicted_character, (x1, y1 - 10),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 255, 0), 3, cv2.LINE_AA)
-
-    # Display live word suggestions
     suggestions = get_word_suggestions(current_input, word_dict)
-    if suggestions:
-        suggestion_text = "Suggestions: " + ", ".join(suggestions)
-        current_text = "Current Input: " + " ".join(current_input)
-        cv2.putText(frame, suggestion_text, (50, 100),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 165, 255), 2, cv2.LINE_AA)
-        cv2.putText(frame, current_text, (50, 150),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 165, 255), 2, cv2.LINE_AA)
 
-    # Finalize word after 4 seconds of inactivity
     if time.time() - last_detected_time > 4 and current_input:
-        if suggestions:
-            detected_words.append(suggestions[0])
-            print("Finalized Word:", suggestions[0])
-        else:
-            detected_words.append(current_input)
-            print("Finalized Word (Raw):", current_input)
+        finalized_word = suggestions[0] if suggestions else current_input
+        detected_words.append(finalized_word)
+        print("Finalized Word:", finalized_word)
         current_input = ""
         last_detected_time = time.time()
 
-    # Display full constructed sentence
-    cv2.putText(frame, " ".join(detected_words), (50, 50),
-                cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
+        # Write locally
+        final_sentence = " ".join(detected_words)
+        with open("output.txt", "w") as file:
+            file.write(final_sentence)
+
+        # Upload securely via HTTPS POST
+        url = "https://users.cs.cf.ac.uk/DaviesWR1/upload_output.php"
+        try:
+            response = requests.post(url, data={"output": final_sentence})
+            if response.status_code == 200:
+                print("Uploaded successfully via HTTPS:", response.text)
+            else:
+                print("Upload failed with status code:", response.status_code)
+        except Exception as e:
+            print("Upload failed:", e)
 
     cv2.imshow('frame', frame)
     if cv2.waitKey(25) & 0xFF == ord('e'):
@@ -172,4 +145,3 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
-print("\nFinal Constructed Sentence:", " ".join(detected_words))
