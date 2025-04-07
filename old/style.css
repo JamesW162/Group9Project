@@ -1,0 +1,52 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+ 
+#videoContainer {
+    margin-top: 20px;
+}
+ 
+#streamVideo {
+    border: 1px solid #ccc;
+    max-width: 100%;
+    background-color: #f0f0f0;
+}
+ 
+#streamInfo {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+ 
+.controls {
+    margin-bottom: 20px;
+}
+ 
+button {
+    padding: 8px 16px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+ 
+#streamSelector {
+    padding: 8px;
+    min-width: 200px;
+}
+ 
+.status-active {
+    color: green;
+    font-weight: bold;
+}
+ 
+.status-ended {
+    color: red;
+}
+ 
+#frameInfo {
+    margin-top: 8px;
+    font-style: italic;
+}
