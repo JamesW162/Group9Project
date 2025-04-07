@@ -71,7 +71,8 @@ QUALITY = 20  # JPEG compression quality (lower = smaller file size)
 
 MAX_STREAM_TIME = 300  # Maximum streaming time in seconds (5 minutes)
 
-STREAM_ID = datetime.now().strftime("%Y%m%d_%H%M%S")  # Unique ID for this stream ```
+STREAM_ID = datetime.now().strftime("%Y%m%d_%H%M%S")  # Unique ID for this stream
+```
 
 
 the data is then stored within the realtime database
