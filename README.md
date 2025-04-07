@@ -60,22 +60,36 @@ to get started, clone this repository, set up a virtual environment and install 
 ![image](https://imgs.search.brave.com/DKomfn_cPKzVi7KigGeY5d0Jdn0WK72m8gxgMzOFH6M/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9hY2Nl/c3Nic2wuY29tL3dw/LWNvbnRlbnQvdXBs/b2Fkcy8yMDIyLzEx/LzIuYWNjZXNzYnNs/LUZpbmdlcnNwZWxs/aW5nLXJpZ2h0LWhh/bmQtMS5qcGc)
 
 ## Raspbery pi connection 
+
+How the code currently connects to the raspberry pi is found in the file `live_stream_pi_code.py` that can be found in the `raspberryPi` folder is through Firebase, a Google backends-as-a-service platform. Data is sent to the firelbase Realtime database and firestore with this configuration.
+
+`FRAME_RATE = 2  # Lower frames per second to avoid database overload
+RESOLUTION = (320, 240)  # Lower resolution for better performance with database
+QUALITY = 20  # JPEG compression quality (lower = smaller file size)
+MAX_STREAM_TIME = 300  # Maximum streaming time in seconds (5 minutes)
+STREAM_ID = datetime.now().strftime("%Y%m%d_%H%M%S")  # Unique ID for this stream`
+
+
+the data is then stored within the realtime database
+![image](https://github.com/user-attachments/assets/f8e41ac4-51ef-4f1f-825d-01f8e867b1da)
+
+After that data gets fetched from the FireBase inside the `LiveStreamFromPi.html` it fetches the `streamId, connectBtn, refreshBtn, videoFrame, noStreamMessage, streamStatus, resolution, frameRate, startTime, frameCount, lastUpdate` and uses that data to dynamically load the live stream. This script also includes error handeling methods to improve user experience.
+
+It is important to note the frame rate is awfully slow and we have restricted it to 5 mins of streaming as we are on the free version of firebase and we dont want to start costing ourselves money 
+
+### Learning Process That Failed
 After further research the Raspberry Pi runs on version 3.7 and the Mediapipe library is not compatible with this this version. :)
 
-SO... with this "fun" development we have 2 options:
-
-#### 1. Factory reset the raspberry pi and see it we can update the whole pi
+SO... with this "fun" development we tried 2 options:
+1. Factory reset the raspberry pi and see it we can update the whole pi
    https://www.geeksforgeeks.org/how-to-upgrade-raspberry-pi-os/
+   we tried to update the version of python on the pi for several hours and even the lab techs came to the conclusion we can't with this version of pi we would need to update the whole pi so if one of the pis wants to try this extreme measure.
 
-   we tried to update the version of python on the pi for several hours and even the lab techs came to the conclusion we can't with this version of pi we would need to update the whole pi so if one of the pis wants to try this extreme measure. 
-
-#### 2. Do the proessing on the cloud and send it back.
+   
+3. Do the proessing on the cloud and send it back.
 As seen below the Raspberry Pi will collect the image data and feed it to ThingsBoard. This will then trigger an event and run a python script on something like "AWS Cloud based Lambda" - we have yet to figure out what service we will use. This will trigger the computer vision program. Finally we will then feed the data to both a front end website and back to the Raspbery Pi to output to audio. 
 ![image](https://github.com/user-attachments/assets/07492b59-955f-418c-858c-ce19d5b94ed3)
 
-HOWEVER... both these thes options come with new risks.
-
-Option 1 we just straight up dont know if it will work and we've already wasted ~5 hours on trying to update the version of python so this is a last resort so try it if you want. Option 2 is long and convoluted (No it isn't) and we're going to have to figure out how to encrypt the images on the web to maintain the security. 
 
 
 ## Output 
@@ -83,7 +97,5 @@ The auto correct exitst :)
 yay!
 
 ## Next Week 
-- We need to get the program and the Pi integrated together.
-- We need to start outputting the letters as text/words. 
-- We need to collect more data.
-- Someone needs to start building the front end.
+- Improve the AI model
+- get it connected faster
