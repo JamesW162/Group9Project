@@ -29,15 +29,9 @@ mp_drawing_styles = mp.solutions.drawing_styles
 
 hands = mp_hands.Hands(static_image_mode=True, max_num_hands=2, min_detection_confidence=0.3)
 
-#labels_dict = { 
-#    'a': 'A', 'b': 'B', 'c': 'C', 'd': 'D', 'e': 'E', 'f': 'F', 'g': 'G', 'h': 'H', 'i': 'I',
-#    'k': 'K', 'l': 'L', 'm': 'M', 'n': 'N', 'o': 'O', 'p': 'P', 'q': 'Q', 'r': 'R', 's': 'S', 't': 'T',
-#    'u': 'U', 'v': 'V', 'w': 'W', 'x': 'X', 'y': 'Y', 'z': 'Z'
-#}
-
 labels = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
 labels_dict = {label : label.upper() for label in labels}
-# This is at least slightly better
+# This is at least slightly better than doing it manually. Why do we actually need this?
 
 def drawLandmarks(img, hand_landmarks):
     mp_drawing.draw_landmarks(
