@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basic Website</title>
+    <title>BSL Bridge Translation</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -81,19 +81,20 @@
             progressBar.style.display = "none";
         }, 500);
 
+        // This function repeatedly fetches output.txt and replaces the text element with whatever is found
         async function fetchTranslation() {
             try {
-                const response = await fetch('output.txt?nocache=' + new Date().getTime());
+                const response = await fetch('output.txt')
                 if (response.ok) {
                     const text = await response.text();
-                    loadingText.textContent = text || "Waiting for input...";
+                    loadingText.textContent = text;
                 }
-            } catch (err) {
-                loadingText.textContent = "Error fetching translation.";
+            } catch (e) {
+                loadingText.textContent = "Error fetching translation";
             }
         }
 
-        setInterval(fetchTranslation, 2000);
+        setInterval(fetchTranslation, 500);
     </script>
 </body>
 </html>
