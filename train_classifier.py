@@ -7,7 +7,7 @@ import numpy as np
 
 # Specify the full absolute path to the data.pickle file
 #data_pickle_path = os.path.join(os.path.dirname(os.path.abspath("C:/Users/willd/Downloads/Group9Project-main/Group9Project-main")), 'data.pickle')
-data_pickle_path = r"C:\Users\willd\Downloads\Group9Project-main\Group9Project-main\data.pickle"
+data_pickle_path = r"data.pickle"
 data_dict = pickle.load(open(data_pickle_path, 'rb'))
 
 # The dataset now has samples with 84 datapoints (2 hands, 42 per hand)

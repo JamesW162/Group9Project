@@ -29,11 +29,14 @@ mp_drawing_styles = mp.solutions.drawing_styles
 
 hands = mp_hands.Hands(static_image_mode=True, max_num_hands=2, min_detection_confidence=0.3)
 
-labels_dict = {
-    'a': 'A', 'b': 'B', 'c': 'C', 'd': 'D', 'e': 'E', 'f': 'F', 'g': 'G', 'h': 'H', 'i': 'I',
-    'k': 'K', 'l': 'L', 'm': 'M', 'n': 'N', 'o': 'O', 'p': 'P', 'q': 'Q', 'r': 'R', 's': 'S', 't': 'T',
-    'u': 'U', 'v': 'V', 'w': 'W', 'x': 'X', 'y': 'Y', 'z': 'Z'
-}
+#labels_dict = { 
+#    'a': 'A', 'b': 'B', 'c': 'C', 'd': 'D', 'e': 'E', 'f': 'F', 'g': 'G', 'h': 'H', 'i': 'I',
+#    'k': 'K', 'l': 'L', 'm': 'M', 'n': 'N', 'o': 'O', 'p': 'P', 'q': 'Q', 'r': 'R', 's': 'S', 't': 'T',
+#    'u': 'U', 'v': 'V', 'w': 'W', 'x': 'X', 'y': 'Y', 'z': 'Z'
+#}
+labels_array = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+labels_dict = {label: label.upper() for label in labels_array}
+# This is at least slightly better
 
 def drawLandmarks(img, hand_landmarks):
     mp_drawing.draw_landmarks(
@@ -129,7 +132,7 @@ while True:
             file.write(final_sentence)
 
         # Upload securely via HTTPS POST
-        url = "https://users.cs.cf.ac.uk/DaviesWR1/upload_output.php"
+        url = "http://localhost:8000/upload_output.php"
         try:
             response = requests.post(url, data={"output": final_sentence})
             if response.status_code == 200:
