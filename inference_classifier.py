@@ -34,8 +34,9 @@ hands = mp_hands.Hands(static_image_mode=True, max_num_hands=2, min_detection_co
 #    'k': 'K', 'l': 'L', 'm': 'M', 'n': 'N', 'o': 'O', 'p': 'P', 'q': 'Q', 'r': 'R', 's': 'S', 't': 'T',
 #    'u': 'U', 'v': 'V', 'w': 'W', 'x': 'X', 'y': 'Y', 'z': 'Z'
 #}
-labels_array = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
-labels_dict = {label: label.upper() for label in labels_array}
+
+labels = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+labels_dict = {label : label.upper() for label in labels}
 # This is at least slightly better
 
 def drawLandmarks(img, hand_landmarks):
@@ -131,12 +132,12 @@ while True:
         with open("output.txt", "w") as file:
             file.write(final_sentence)
 
-        # Upload securely via HTTPS POST
+        # Upload securely via HTTP POST
         url = "http://localhost:8000/upload_output.php"
         try:
             response = requests.post(url, data={"output": final_sentence})
             if response.status_code == 200:
-                print("Uploaded successfully via HTTPS:", response.text)
+                print("Uploaded successfully via HTTP:", response.text)
             else:
                 print("Upload failed with status code:", response.status_code)
         except Exception as e:

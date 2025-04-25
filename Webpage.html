@@ -70,7 +70,7 @@
         const interval = setInterval(() => {
             dots = dots.length < 3 ? dots + "." : ""; // Cycle through '.', '..', '...'
             loadingText.textContent = `Loading Translation ${dots}`;
-        }, 500); // Update every 500ms
+        }, 50); // Update every 500ms
 
         // Simulate loading complete after some time (e.g., 5 seconds)
         setTimeout(() => {
@@ -79,7 +79,21 @@
 
             // Hide the progress bar
             progressBar.style.display = "none";
-        }, 5000);
+        }, 500);
+
+        async function fetchTranslation() {
+            try {
+                const response = await fetch('output.txt?nocache=' + new Date().getTime());
+                if (response.ok) {
+                    const text = await response.text();
+                    loadingText.textContent = text || "Waiting for input...";
+                }
+            } catch (err) {
+                loadingText.textContent = "Error fetching translation.";
+            }
+        }
+
+        setInterval(fetchTranslation, 2000);
     </script>
 </body>
 </html>
