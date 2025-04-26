@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['logged_in']) or $_SESSION['logged_in'] != true) {
+    header('Location: login.php');
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,6 +50,13 @@
             background-color: #68a4bc;
             animation: load 10s ease-in-out infinite;
         }
+        .logout_button {
+            height: 10%;
+            width: 5%;
+            float: right;
+            margin-right: 2%;
+
+        }
         @keyframes load {
             0% { width: 0; }
             50% { width: 100%; }
@@ -52,6 +67,7 @@
 <body>
     <header>
         <img src="logo.png" alt="Website Logo">
+        <a href = "logout.php"><button class = "logout_button">Log Out</button></a>
     </header>
     <div class="progress-bar">
         <div class="progress"></div>

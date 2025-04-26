@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
+if (isset($_SESSION['logged_in']) and $_SESSION['logged_in'] == true) {
     header('Location: Webpage.php');
     exit();
 }

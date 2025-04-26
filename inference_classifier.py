@@ -31,7 +31,6 @@ hands = mp_hands.Hands(static_image_mode=True, max_num_hands=2, min_detection_co
 
 #labels = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
 #labels_dict = {label : label.upper() for label in labels}
-# This is at least slightly better than doing it manually. Why do we actually need this?
 
 def drawLandmarks(img, hand_landmarks):
     mp_drawing.draw_landmarks(
@@ -139,6 +138,7 @@ while True:
 
     cv2.imshow('frame', frame)
     if cv2.waitKey(25) & 0xFF == ord('e'):
+        url = "http://localhost:8000/website/logout.php"
         break
 
 cap.release()
