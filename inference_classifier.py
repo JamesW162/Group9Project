@@ -29,8 +29,8 @@ mp_drawing_styles = mp.solutions.drawing_styles
 
 hands = mp_hands.Hands(static_image_mode=True, max_num_hands=2, min_detection_confidence=0.3)
 
-labels = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
-labels_dict = {label : label.upper() for label in labels}
+#labels = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+#labels_dict = {label : label.upper() for label in labels}
 # This is at least slightly better than doing it manually. Why do we actually need this?
 
 def drawLandmarks(img, hand_landmarks):
@@ -97,7 +97,7 @@ while True:
 
         data_aux_np = np.array(data_aux).reshape(1, -1)
         prediction = model.predict(data_aux_np)
-        predicted_character = labels_dict.get(prediction[0], "Unknown")
+        predicted_character = prediction[0].upper()
 
         gesture_list.append(predicted_character)
         if len(gesture_list) == 10:
