@@ -123,11 +123,11 @@ while True:
 
         # Write locally
         final_sentence = " ".join(detected_words)
-        with open("output.txt", "w") as file:
+        with open("website/output.txt", "w") as file:
             file.write(final_sentence)
 
         # Upload securely via HTTP POST
-        url = "http://localhost:8000/upload_output.php"
+        url = "http://localhost:8000/website/upload_output.php"
         try:
             response = requests.post(url, data={"output": final_sentence})
             if response.status_code == 200:
