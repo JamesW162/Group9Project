@@ -139,6 +139,8 @@ while True:
     cv2.imshow('frame', frame)
     if cv2.waitKey(25) & 0xFF == ord('e'):
         url = "http://localhost:8000/website/logout.php"
+        with open("website/output.txt", "w") as file:
+            file.write("")
         break
 
 cap.release()
