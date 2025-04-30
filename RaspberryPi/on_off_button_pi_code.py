@@ -16,7 +16,7 @@ is_running = True  # Start with the stream already running
 debounce_time = 0.2  # Longer debounce time for script control
  
 # Path to the live stream script
-LIVE_STREAM_PATH = "/home/pi/Desktop/codes/live_stream_pi_code.py"
+LIVE_STREAM_PATH = "/home/pi/Desktop/codes/CodeWorks/live_stream_pi_code.py"
  
 print("Starting with live_stream.py running...")
 print("Press the button to stop/restart the stream")
