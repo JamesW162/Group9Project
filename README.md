@@ -104,6 +104,10 @@ As seen below the Raspberry Pi will collect the image data and feed it to Things
 ![image](https://github.com/user-attachments/assets/07492b59-955f-418c-858c-ce19d5b94ed3)
 
 
+server layoout that i could not implement cause my git is screwed
+
+![image](https://github.com/user-attachments/assets/25b808f7-07dd-4047-a4a3-f8baccaca9b9)
+
 
 ## Output 
 The auto correct exitst :)
