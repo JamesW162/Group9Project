@@ -103,11 +103,16 @@ SO... with this "fun" development we tried 2 options:
 As seen below the Raspberry Pi will collect the image data and feed it to ThingsBoard. This will then trigger an event and run a python script on something like "AWS Cloud based Lambda" - we have yet to figure out what service we will use. This will trigger the computer vision program. Finally we will then feed the data to both a front end website and back to the Raspbery Pi to output to audio. 
 ![image](https://github.com/user-attachments/assets/07492b59-955f-418c-858c-ce19d5b94ed3)
 
+what the working webpage looks like now
+![image](https://github.com/user-attachments/assets/9ce45291-fea6-4419-8a29-9f95c9cedc46)
 
 server layoout that i could not implement cause my git is screwed
 
-![image](https://github.com/user-attachments/assets/25b808f7-07dd-4047-a4a3-f8baccaca9b9)
-
+![image](https://github.com/user-attachments/assets/54ef874d-4d4b-492b-90f5-ad7d237ea908)
+npm install
+npm install express body-parser cors
+node server.js 
+also need to add the bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json from firebase
 
 ## Output 
 The auto correct exitst :)
