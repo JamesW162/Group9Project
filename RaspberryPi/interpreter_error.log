@@ -1,7 +1,0 @@
-C:\Program Files\Python312\python.exe: can't open file 'C:\\Users\\c23028197\\Group9Project\\project\\server\\bsl_bridge_integration.py': [Errno 2] No such file or directory
-C:\Program Files\Python312\python.exe: can't open file 'C:\\Users\\c23028197\\Group9Project\\project\\server\\bsl_bridge_integration.py': [Errno 2] No such file or directory
-INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
-WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
-W0000 00:00:1746028716.270841   19904 inference_feedback_manager.cc:114] Feedback manager requires a model with a single signature inference. Disabling support for feedback tensors.
-W0000 00:00:1746028716.294864   19904 inference_feedback_manager.cc:114] Feedback manager requires a model with a single signature inference. Disabling support for feedback tensors.
-W0000 00:00:1746028717.197644   21360 landmark_projection_calculator.cc:186] Using NORM_RECT without IMAGE_DIMENSIONS is only supported for the square ROI. Provide IMAGE_DIMENSIONS or use PROJECTION_MATRIX.
