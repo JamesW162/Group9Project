@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSL Bridge - Translating One Sign At A Time</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: #2D8BAE;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        
+        .logo img {
+            height: 60px;
+            margin-right: 15px;
+        }
+        
+        .logo h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            color: #ffcc00;
+        }
+        
+        .tagline {
+            font-style: italic;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+        
+        nav {
+            background-color: #333;
+            padding: 10px 0;
+        }
+        
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+        
+        nav li {
+            margin: 0 15px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #ffcc00;
+        }
+        
+        .login-status {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        
+        .btn {
+            background-color: #ffcc00;
+            color: #333;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        .btn:hover {
+            background-color: #e6b800;
+            transform: translateY(-2px);
+        }
+        
+        /* VIDEO HERO STYLES */
+        .hero {
+            position: relative;
+            height: 500px;
+            overflow: hidden;
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .hero-video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .hero-video {
+            width: 100%;
+            /* This will crop to only show top 2/3 of the video */
+            position: absolute;
+            top: -20%;
+            left: 0;
+            transform: scale(1.1);
+            transform-origin: top;
+        }
+        
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(82, 74, 48, 0.55), rgba(82, 74, 48, 0.75));
+            z-index: 1;
+        }
+        
+        .hero .container {
+            position: relative;
+            z-index: 2;
+            padding: 100px 20px;
+        }
+        
+        .hero h2 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            line-height: 1.8;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+        
+        .card h3 {
+            color: #2D8BAE;
+            margin-top: 0;
+            border-bottom: 2px solid #ffcc00;
+            padding-bottom: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .card ul li, .feature-card ul li, .impact-card ul li {
+            margin-bottom: 8px;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin: 50px 0 30px;
+            color: #2D8BAE;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: #ffcc00;
+            margin: 15px auto 0;
+        }
+        
+        .features, .impacts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        
+        .feature-card, .impact-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover, .impact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+        
+        .feature-card img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 15px;
+            border-radius: 50%;
+            padding: 10px;
+            background-color: #f0f8ff;
+        }
+        
+        .feature-card h3, .impact-card h3 {
+            color: #2D8BAE;
+            margin: 15px 0;
+            font-size: 1.3rem;
+        }
+        
+        .feature-card ul, .impact-card ul {
+            text-align: left;
+            padding-left: 20px;
+        }
+        
+        .impact-card {
+            background-color: #fffaf0;
+            border-left: 4px solid #ffcc00;
+            overflow: hidden;
+        }
+        
+        .impact-card h3 {
+            color: #D86018;
+        }
+        
+        .impact-image-card {
+            padding: 0;
+            overflow: hidden;
+        }
+        
+        .impact-image-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 8px;
+        }
+        
+        .architecture, .data-flow {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .architecture h3, .data-flow h3 {
+            color: #2D8BAE;
+            border-bottom: 2px solid #ffcc00;
+            padding-bottom: 10px;
+            font-size: 1.5rem;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+        }
+        
+        footer p {
+            margin: 5px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .grid, .features, .impacts {
+                grid-template-columns: 1fr;
+            }
+            
+            .login-status {
+                position: static;
+                margin-top: 15px;
+                text-align: center;
+            }
+            
+            .hero {
+                height: 400px;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+        }
+        .biimage {
+            width: 100%; /* Makes the image as wide as the page */
+            height: auto; /* Maintains the aspect ratio */
+            display: block; /* Removes any extra space below the image */
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="logoNoBackground.png" alt="BSL Bridge Logo"> 
+                <h1>BSL Bridge</h1>
+            </div>
+            <p class="tagline">TRANSLATING ONE SIGN AT A TIME</p>
+            <div class="login-status">
+                <span id="username-display"></span>
+                <button id="translate-btn" class="btn" style="display: none;">Translate</button>
+                <button id="logout-btn" class="btn" style="display: none;">Logout</button>
+                <button id="login-btn" class="btn">Login</button>
+                <button id="signup-btn" class="btn">Sign Up</button>
+            </div>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#project">Project</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#impacts">Impact</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="hero">
+        <div class="hero-video-container">
+            <video class="hero-video" autoplay loop muted>
+                <source src="video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="video-overlay"></div>
+        <div class="container">
+            <h2>British Sign Language Translator</h2>
+            <p>Bridging communication gaps with innovative technology to empower the deaf and hard of hearing community</p>
+            <button class="btn"><a href="#project" style="text-decoration: none;">Learn More</a></button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="grid" id="project">
+            <div class="card">
+                <h3>Our Mission</h3>
+                <p>At BSL Bridge, we believe communication is a fundamental human right. Our innovative technology bridges the gap between the deaf community and the hearing world, fostering understanding, inclusion, and equal access to opportunities.</p>
+                <p><strong>Impact Statistics:</strong></p> 
+                <ul>
+                    <li>Over 430 million people worldwide experience disabling hearing loss</li>
+                    <li>BSL has been recognized as an official language in the UK since 2003</li>
+                    <li>Our solution provides a 16:1 return on social investment over 10 years</li>
+                    <li>87% of deaf people report improved quality of life with accessible communication tools</li>
+                </ul>   
+            </div>
+            
+            <div class="card">
+                <h3>Key Advantages</h3>
+                <ul>
+                    <li><b>Real-Time Translation:</b> Converts British Sign Language to text instantly with minimal delay</li>
+                    <li><b>High Accuracy:</b> Achieves 70%+ accuracy in sign recognition and continues to improve</li>
+                    <li><b>User-Friendly Design:</b> Intuitive interface accessible to all ages and technical backgrounds</li>
+                    <li><b>Privacy-Focused:</b> Secure on-device processing with minimal data storage</li>
+                    <li><b>Affordable Solution:</b> Significantly more cost-effective than human interpreters</li>
+                    <li><b>Portable Technology:</b> Compact design for use in any environment</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="architecture" id="architecture">
+            <h3>THE CHALLENGE</h3>
+            <p>For millions of deaf individuals, everyday interactions present significant challenges. Communication barriers lead to:</p>
+            <ul>
+                <li><b>Educational Barriers:</b> Deaf students experience 30% lower graduation rates in settings without proper support systems</li>
+                <li><b>Workplace Limitations:</b> Qualified deaf professionals face a 42% higher unemployment rate despite equal qualifications</li>
+                <li><b>Social Isolation:</b> 7 in 10 deaf individuals report feelings of exclusion in group settings and public events</li>
+                <li><b>Healthcare Disparities:</b> 63% of medical settings lack proper interpretation services, leading to compromised care</li>
+            </ul>  
+            <p>Over <b>24%</b> of young people are at risk of hearing loss due to unsafe noise exposure, making accessible communication solutions more critical than ever for future generations.</p>
+                
+        </div>
+        
+        <div class="data-flow" id="dataflow">
+            <h3>OUR SOLUTION</h3>
+            <p>The BSL Bridge is an innovative IoT device that captures sign language gestures through a camera and translates them into text in real-time. By providing an affordable, portable alternative to human interpreters, we're making communication accessible in classrooms, workplaces, healthcare settings, and beyond.</p>
+            <p><strong>How It Works:</strong></p>
+            <ol>
+                <li><b>Capture:</b> Our precision camera captures hand gestures in real-time with 150-degree visibility and optimized depth perception</li>
+                <li><b>Analysis:</b> Advanced machine learning algorithms interpret the signs using a comprehensive database of BSL patterns</li>
+                <li><b>Translation:</b> The system converts signs into corresponding text within milliseconds, displayed on an integrated screen</li>
+                <li><b>Integration:</b> Portable design and long battery life allow seamless use throughout daily activities</li>
+            </ol>
+        </div>
+        
+        <img class="biimage" src="tech2.png" alt="BSL Bridge">
+            
+
+        <h2 class="section-title" id="features">FEATURES</h2>
+        <div class="features">
+            <div class="feature-card">
+                <img src="raspberrpiCamera.png" alt="Camera Feature">
+                <h3>CAMERA</h3>
+                <ul>
+                    <li>Google AI-powered tracking</li>
+                    <li>150° field of view</li>
+                    <li>Multi-angle gesture capture</li>
+                    <li>Real-time processing</li>
+                    <li>Low-light performance</li>
+                    <li>Hand motion trajectory analysis</li>
+                    <li>Predictive movement recognition</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <img src="redbutton.png" alt="Control Button Feature">
+                <h3>CONTROL SYSTEM</h3>
+                <ul>
+                    <li>One-touch operation</li>
+                    <li>Power-saving mode</li>
+                    <li>Quick-start functionality</li>
+                    <li>Mode selection options</li>
+                    <li>LED status indicators</li>
+                    <li>Haptic feedback</li>
+                    <li>Accessibility-focused design</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <img src="logoNoBackground.png" alt="Website Feature">
+                <h3>WEBSITE</h3>
+                <ul>
+                    <li>Intuitive user interface</li>
+                    <li>Responsive mobile design</li>
+                    <li>Cross-platform compatibility</li>
+                    <li>Secure user accounts</li>
+                    <li>Translation history storage</li>
+                    <li>Interactive tutorials</li>
+                    <li>Text-to-speech capability</li>
+                    <li>Community forums</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <img src="aslInterpreting.png" alt="Computer Vision Feature">
+                <h3>COMPUTER VISION</h3>
+                <ul>
+                    <li>Advanced gesture recognition</li>
+                    <li>Spatial hand tracking</li>
+                    <li>Motion pattern analysis</li>
+                    <li>Context-aware processing</li>
+                    <li>Regional sign variations</li>
+                    <li>Environmental adaptation</li>
+                    <li>Continuous learning system</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h1 style="padding-top: 30%; color: #e6b800; font-family:cursive;">ON AVERAGE IT COSTS <STRong>£4,000</STRong> TO LEARN BSL (LEVEL 1-6)</h1>
+                <p>https://bslfirst.com</p>
+            </div>
+            
+            <div class="feature-card">
+                <img src="bluetoothlogo.png" alt="Bluetooth Audio Feature">
+                <h3>BLUETOOTH AUDIO</h3>
+                <ul>
+                    <li>Low-latency wireless output</li>
+                    <li>Natural text-to-speech</li>
+                    <li>Multi-device connectivity</li>
+                    <li>Customizable voice options</li>
+                    <li>Dynamic volume control</li>
+                    <li>Noise cancellation</li>
+                    <li>Long-range transmission</li>
+                </ul>
+            </div>
+        </div>
+
+
+        <img class = biimage src="signinggirl.png" alt=" ">
+
+        <h2 class="section-title" id="impacts">SOCIAL IMPACT</h2>
+        <div class="impacts">
+            <div class="impact-card">
+                <h3>EDUCATION</h3>
+                <ul>
+                    <li>Improvement in classroom participation</li>
+                    <li>Reduces education inequality</li>
+                    <li>Enhances learning experiences</li>
+                    <li>Supports inclusive teaching</li>
+                    <li>Increases academic achievement</li>
+                    <li>Enables peer interaction</li>
+                </ul>
+            </div>
+            
+            <div class="impact-card">
+                <h3>EMPLOYMENT</h3>
+                <ul>
+                    <li>Opens new career opportunities</li>
+                    <li>Facilitates workplace communication</li>
+                    <li>Supports professional development</li>
+                    <li>Enhances job interview experiences</li>
+                    <li>Creates inclusive workplaces</li>
+                    <li>Reduces hiring bias</li>
+                </ul>
+            </div>
+            
+            <div class="impact-card">
+                <h3>HEALTHCARE</h3>
+                <ul>
+                    <li>Improves patient-provider communication</li>
+                    <li>Reduces medical errors</li>
+                    <li>Increases healthcare access</li>
+                    <li>Supports informed consent</li>
+                    <li>Enhances emergency response</li>
+                    <li>Protects patient privacy</li>
+                </ul>
+            </div>
+            
+            <div class="impact-image-card feature-card">
+                <img src="signing kids.png" alt="guy saying hi on webpage">
+            </div>
+            
+            <div class="impact-card">
+                <h3>SOCIAL INCLUSION</h3>
+                <ul>
+                    <li>Breaks down communication barriers</li>
+                    <li>Fosters community connections</li>
+                    <li>Enhances family relationships</li>
+                    <li>Supports cultural participation</li>
+                    <li>Reduces isolation and loneliness</li>
+                    <li>Promotes social equality</li>
+                </ul>
+            </div>
+            
+            <div class="impact-image-card feature-card">
+                <img src="sining healthcare.png" alt="People Signing">
+            </div>
+        </div>
+        
+    </div>
+    
+    <footer id="contact">
+        <div class="container">
+            <p><strong>BSL Bridge - Translating One Sign At A Time</strong></p>
+            <p>Contact: <a href="mailto:group9bslsign@gmail.com" style="color: #ffcc00;">group9bslsign@gmail.com</a></p>
+            <p>&copy; 2025 BSL Bridge. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Check login status
+        window.onload = function() {
+            if (localStorage.getItem('logged_in') === 'true') {
+                document.getElementById('username-display').textContent = 'Welcome, ' + (localStorage.getItem('username') || 'User');
+                document.getElementById('logout-btn').style.display = 'inline-block';
+                document.getElementById('translate-btn').style.display = 'inline-block'; // Show translate button
+                document.getElementById('login-btn').style.display = 'none';
+                document.getElementById('signup-btn').style.display = 'none';
+            }
+        };
+        
+        // Logout functionality
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            localStorage.removeItem('logged_in');
+            localStorage.removeItem('username');
+            window.location.reload();
+        });
+        
+        // Login button redirect
+        document.getElementById('login-btn').addEventListener('click', function() {
+            window.location.href = 'login.html';
+        });
+        
+        // Signup button redirect
+        document.getElementById('signup-btn').addEventListener('click', function() {
+            window.location.href = 'signup.html';
+        });
+        
+        // Translate button redirect
+        document.getElementById('translate-btn').addEventListener('click', function() {
+            window.location.href = 'webpage.html';
+        });
+    </script>
+</body>
+</html>

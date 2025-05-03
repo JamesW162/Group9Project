@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSL Bridge - Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        header {
+            background-color: #68a4bc;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 15px;
+        }
+        
+        .logo h1 {
+            font-size: 2rem;
+            margin: 0;
+            color: #ffcc00;
+        }
+        
+        .tagline {
+            font-style: italic;
+            margin-top: 5px;
+        }
+        
+        .login-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        
+        h2 {
+            color: #68a4bc;
+        }
+        
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        button {
+            background-color: #68a4bc;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        button:hover {
+            background-color: #5a8fa6;
+        }
+        
+        #error-message {
+            color: red;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .links {
+            margin-top: 20px;
+        }
+        
+        .links a {
+            color: #68a4bc;
+            text-decoration: none;
+        }
+        
+        .links a:hover {
+            text-decoration: underline;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+        
+        .separator {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        .separator::before,
+        .separator::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .separator span {
+            padding: 0 10px;
+            color: #777;
+        }
+        
+        .social-button {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .social-button img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="logoNoBackground.png" alt="BSL Bridge Logo"> 
+            <h1>BSL Bridge</h1>
+        </div>
+        <p class="tagline">TRANSLATING ONE SIGN AT A TIME</p>
+    </header>
+    
+    <div class="login-container">
+        <form id="login-form">
+            <h2>Login</h2>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit" id="login-button">Login</button>
+            
+            <div class="separator">
+                <span>or</span>
+            </div>
+            
+            <button type="button" id="google-login" class="social-button">
+                <img src="https://cdn.cdnlogo.com/logos/g/35/google-icon.svg" alt="Google">
+                Sign in with Google
+            </button>
+            
+            <p id="error-message">Invalid login. Please try again.</p>
+            <div class="links">
+                <a href="forgot-password.html">Forgot Password?</a><br>
+                <a href="signup.html">Don't have an account? Sign up</a><br>
+                <a href="main.html">Back to Home</a>
+            </div>
+        </form>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 BSL Bridge. All rights reserved.</p>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAEzhS9bkzcN5-YLuvta9Vm2aYM6DYl2PU",
+            authDomain: "bsltranslator-93f00.firebaseapp.com",
+            projectId: "bsltranslator-93f00",
+            storageBucket: "bsltranslator-93f00.appspot.com",
+            messagingSenderId: "547548973040",
+            appId: "1:547548973040:web:4c7b2802aedcf6e84a7f35"
+        };
+    
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    
+        // Redirect if already logged in
+        window.onload = function () {
+            firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
+                    console.log("User is already signed in");
+                    window.location.href = 'webpage.html';
+                }
+            });
+        };
+    
+        // Hard-coded admin check
+        function authenticateUser(username, password) {
+            return username === 'admin@gmail.com' && password === '1234';
+        }
+    
+        // Handle login form
+        document.getElementById('login-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+    
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+            const loginButton = document.getElementById('login-button');
+    
+            // Loading UI
+            loginButton.innerHTML = 'Logging in...';
+            loginButton.disabled = true;
+    
+            // Check hard-coded admin
+            if (authenticateUser(email, password)) {
+                console.log("Hard-coded admin logged in");
+    
+                localStorage.setItem('logged_in', 'true');
+                localStorage.setItem('email', email);
+                window.location.href = 'webpage.html';
+                return; // Stop further processing
+            }
+    
+            // Otherwise, proceed with Firebase login
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    console.log("User logged in: ", user.email);
+    
+                    localStorage.setItem('logged_in', 'true');
+                    localStorage.setItem('email', user.email);
+                    window.location.href = 'webpage.html';
+                })
+                .catch((error) => {
+                    loginButton.innerHTML = 'Login';
+                    loginButton.disabled = false;
+    
+                    switch (error.code) {
+                        case 'auth/invalid-email':
+                            errorMessage.textContent = 'Invalid email format.';
+                            break;
+                        case 'auth/user-disabled':
+                            errorMessage.textContent = 'This account has been disabled.';
+                            break;
+                        case 'auth/user-not-found':
+                            errorMessage.textContent = 'No account found with this email.';
+                            break;
+                        case 'auth/wrong-password':
+                            errorMessage.textContent = 'Incorrect password.';
+                            break;
+                        default:
+                            errorMessage.textContent = 'Login failed. Please try again.';
+                    }
+    
+                    errorMessage.style.display = 'block';
+                });
+        });
+    
+        // Google login
+        document.getElementById('google-login').addEventListener('click', function () {
+            const provider = new firebase.auth.GoogleAuthProvider();
+    
+            firebase.auth().signInWithPopup(provider)
+                .then((result) => {
+                    const user = result.user;
+                    console.log("User logged in with Google: ", user.email);
+    
+                    localStorage.setItem('logged_in', 'true');
+                    localStorage.setItem('email', user.email);
+                    window.location.href = 'webpage.html';
+                })
+                .catch((error) => {
+                    const errorMessage = document.getElementById('error-message');
+                    errorMessage.textContent = 'Google sign-in failed. Please try again.';
+                    errorMessage.style.display = 'block';
+                });
+        });
+    </script>
+    
+</body>
+</html>
