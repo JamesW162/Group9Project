@@ -364,3 +364,616 @@ No frame data available
 No frame data available
 Stream 20250503_191151 is no longer active.
 Stream processing ended
+Using stream ID from command line: 20250504_153333
+NLTK words downloaded successfully
+Firebase credentials file not found. Please ensure it exists in one of these locations:
+  - bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+  - C:\Users\c23028197\Group9Project\project\server\bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+  - C:\Users\c23028197\Group9Project\project\server\bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+  - C:\Users\c23028197\Group9Project\project\bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+Using stream ID from command line: 20250504_155126
+NLTK words downloaded successfully
+Firebase credentials file not found. Please ensure it exists in one of these locations:
+  - bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+  - C:\Users\c23028197\Group9Project\project\server\bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+  - C:\Users\c23028197\Group9Project\project\server\bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+  - C:\Users\c23028197\Group9Project\project\bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+Using stream ID from command line: 20250504_155249
+NLTK words downloaded successfully
+Firebase credentials file not found. Please ensure it exists in one of these locations:
+  - bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+  - C:\Users\c23028197\Group9Project\project\server\bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+  - C:\Users\c23028197\Group9Project\project\server\bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+  - C:\Users\c23028197\Group9Project\project\bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+Using stream ID from command line: 20250504_160403
+NLTK words downloaded successfully
+Firebase credentials file not found. Please ensure it exists in one of these locations:
+  - bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+  - C:\Users\c23028197\Group9Project\project\server\bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+  - C:\Users\c23028197\Group9Project\project\server\bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+  - C:\Users\c23028197\Group9Project\project\bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+Using stream ID from command line: 20250504_160403
+NLTK words downloaded successfully
+Found credentials at: bsltranslator-93f00-firebase-adminsdk-fbsvc-4cce2623b8.json
+Firebase initialized with credentials from bsltranslator-93f00-firebase-adminsdk-fbsvc-4cce2623b8.json
+Found model at: model.p
+Failed to load model from model.p: No module named 'sklearn'
+Found model at: C:\Users\c23028197\Group9Project\project\server\model.p
+Failed to load model from C:\Users\c23028197\Group9Project\project\server\model.p: No module named 'sklearn'
+Found model at: C:\Users\c23028197\Group9Project\project\server\model.p
+Failed to load model from C:\Users\c23028197\Group9Project\project\server\model.p: No module named 'sklearn'
+Model file not found. Please ensure model.p exists in one of these locations:
+  - model.p
+  - C:\Users\c23028197\Group9Project\project\server\model.p
+  - C:\Users\c23028197\Group9Project\project\server\model.p
+  - C:\Users\c23028197\Group9Project\project\model.p
+Using stream ID from command line: 20250504_161448
+NLTK words downloaded successfully
+Found credentials at: bsltranslator-93f00-firebase-adminsdk-fbsvc-4cce2623b8.json
+Firebase initialized with credentials from bsltranslator-93f00-firebase-adminsdk-fbsvc-4cce2623b8.json
+Found model at: model.p
+Failed to load model from model.p: No module named 'sklearn'
+Found model at: C:\Users\c23028197\Group9Project\project\server\model.p
+Failed to load model from C:\Users\c23028197\Group9Project\project\server\model.p: No module named 'sklearn'
+Found model at: C:\Users\c23028197\Group9Project\project\server\model.p
+Failed to load model from C:\Users\c23028197\Group9Project\project\server\model.p: No module named 'sklearn'
+Model file not found. Please ensure model.p exists in one of these locations:
+  - model.p
+  - C:\Users\c23028197\Group9Project\project\server\model.p
+  - C:\Users\c23028197\Group9Project\project\server\model.p
+  - C:\Users\c23028197\Group9Project\project\model.p
+Using stream ID from command line: 20250504_161816
+NLTK words downloaded successfully
+Found credentials at: bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+Firebase initialized with credentials from bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+Found model at: model.p
+Model loaded from model.p
+BSL Bridge Integration Starting...
+Checking if stream 20250504_161816 is active...
+Starting processing for stream: 20250504_161816
+Starting to process stream: 20250504_161816
+Debug window created successfully
+Translation updated: BSL Translation will appear here...
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Using stream ID from command line: 20250504_161816
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+NLTK words downloaded successfully
+Found credentials at: bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+Firebase initialized with credentials from bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+Found model at: model.p
+Model loaded from model.p
+BSL Bridge Integration Starting...
+Checking if stream 20250504_161816 is active...
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Starting processing for stream: 20250504_161816
+Starting to process stream: 20250504_161816
+Debug window created successfully
+Translation updated: BSL Translation will appear here...
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Error in prediction: 'DecisionTreeClassifier' object has no attribute 'monotonic_cst'
+Using stream ID from command line: 20250504_163246
+NLTK words downloaded successfully
+Found credentials at: bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+Firebase initialized with credentials from bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+Found model at: model.p
+Model loaded from model.p
+BSL Bridge Integration Starting...
+Checking if stream 20250504_163246 is active...
+Starting processing for stream: 20250504_163246
+Starting to process stream: 20250504_163246
+Debug window created successfully
+Translation updated: BSL Translation will appear here...
+Current Input Buffer: O
+Current Input Buffer: OQ
+Finalized Word: SHOQ
+Translation updated: SHOQ
+Current Input Buffer: Q
+Current Input Buffer: QT
+Current Input Buffer: QTT
+Current Input Buffer: QTTT
+Current Input Buffer: QTTTA
+Finalized Word: TATTA
+Translation updated: SHOQ TATTA
+Using stream ID from command line: 20250504_172920
+NLTK words downloaded successfully
+Found credentials at: bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+Firebase initialized with credentials from bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+Found model at: model.p
+Model loaded from model.p
+BSL Bridge Integration Starting...
+Checking if stream 20250504_172920 is active...
+Starting processing for stream: 20250504_172920
+Starting to process stream: 20250504_172920
+Debug window created successfully
+Translation updated: BSL Translation will appear here...
+Current Input Buffer: F
+Current Input Buffer: FQ
+Current Input Buffer: FQQ
+Current Input Buffer: FQQQ
+Current Input Buffer: FQQQQ
+Current Input Buffer: FQQQQQ
+Current Input Buffer: FQQQQQQ
+Current Input Buffer: FQQQQQQQ
+Current Input Buffer: FQQQQQQQQ
+Current Input Buffer: FQQQQQQQQQ
+Finalized Word: FQQQQQQQQQ
+Translation updated: FQQQQQQQQQ
+Current Input Buffer: Q
+Current Input Buffer: QO
+Current Input Buffer: QOO
+Finalized Word: ZOO
+Translation updated: FQQQQQQQQQ ZOO
+Using stream ID from command line: 20250504_172920
+NLTK words downloaded successfully
+Found credentials at: bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+Firebase initialized with credentials from bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+Found model at: model.p
+Model loaded from model.p
+BSL Bridge Integration Starting...
+Checking if stream 20250504_172920 is active...
+Starting processing for stream: 20250504_172920
+Starting to process stream: 20250504_172920
+Debug window created successfully
+Translation updated: BSL Translation will appear here...
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+Stream 20250504_172920 is no longer active.
+Stream processing ended
+Using stream ID from command line: 20250504_175054
+NLTK words downloaded successfully
+Found credentials at: bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+Firebase initialized with credentials from bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
+Found model at: model.p
+Model loaded from model.p
+BSL Bridge Integration Starting...
+Checking if stream 20250504_175054 is active...
+Starting processing for stream: 20250504_175054
+Starting to process stream: 20250504_175054
+Debug window created successfully
+Translation updated: BSL Translation will appear here...
+Current Input Buffer: H
+Finalized Word: H
+Translation updated: H
+Current Input Buffer: T
+Current Input Buffer: TT
+Current Input Buffer: TTT
+Current Input Buffer: TTTT
+Finalized Word: HOTTENTOT
+Translation updated: H HOTTENTOT
+Current Input Buffer: A
+Current Input Buffer: AA
+Current Input Buffer: AAA
+Current Input Buffer: AAAA
+Current Input Buffer: AAAAA
+Finalized Word: ANAPANAPA
+Translation updated: H HOTTENTOT ANAPANAPA
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+No frame data available
+Stream 20250504_175054 is no longer active.
+Stream processing ended

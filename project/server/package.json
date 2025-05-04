@@ -6,7 +6,8 @@
   "dependencies": {
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "firebase": "^11.6.1"
   },
   "scripts": {
     "start": "node server.js"
