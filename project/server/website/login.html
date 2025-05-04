@@ -91,10 +91,17 @@
             background-color: #5a8fa6;
         }
         
-        #error-message {
-            color: red;
+        #status-message {
             margin-top: 15px;
-            display: none;
+            font-weight: bold;
+        }
+        
+        .success {
+            color: green;
+        }
+        
+        .error {
+            color: red;
         }
         
         .links {
@@ -166,6 +173,8 @@
             <input type="password" id="password" placeholder="Password" required>
             <button type="submit" id="login-button">Login</button>
             
+            <div id="status-message"></div>
+            
             <div class="separator">
                 <span>or</span>
             </div>
@@ -175,7 +184,6 @@
                 Sign in with Google
             </button>
             
-            <p id="error-message">Invalid login. Please try again.</p>
             <div class="links">
                 <a href="forgot-password.html">Forgot Password?</a><br>
                 <a href="signup.html">Don't have an account? Sign up</a><br>
@@ -188,118 +196,276 @@
         <p>&copy; 2025 BSL Bridge. All rights reserved.</p>
     </footer>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     
+    <!-- Only include Firebase database (no auth) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
     <script>
         // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAEzhS9bkzcN5-YLuvta9Vm2aYM6DYl2PU",
             authDomain: "bsltranslator-93f00.firebaseapp.com",
+            databaseURL: "https://bsltranslator-93f00-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "bsltranslator-93f00",
             storageBucket: "bsltranslator-93f00.appspot.com",
             messagingSenderId: "547548973040",
-            appId: "1:547548973040:web:4c7b2802aedcf6e84a7f35"
+            appId: "1:547548973040:web:4c7b2802aedcf6e84a7f35",
+            measurementId: "G-9T2S36E0LJ"
         };
     
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
-    
-        // Redirect if already logged in
-        window.onload = function () {
-            firebase.auth().onAuthStateChanged(function (user) {
-                if (user) {
-                    console.log("User is already signed in");
-                    window.location.href = 'webpage.html';
-                }
-            });
+        
+        console.log("Firebase initialized with v8 SDK - Database Only Mode");
+        
+        // Check if user is already logged in via localStorage
+        window.onload = function() {
+            if (localStorage.getItem('logged_in') === 'true') {
+                console.log("User is already signed in via localStorage");
+                window.location.href = 'webpage.html';
+            }
         };
     
-        // Hard-coded admin check
-        function authenticateUser(username, password) {
-            return username === 'admin@gmail.com' && password === '1234';
-        }
-    
         // Handle login form
-        document.getElementById('login-form').addEventListener('submit', function (e) {
+        document.getElementById('login-form').addEventListener('submit', function(e) {
             e.preventDefault();
     
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const errorMessage = document.getElementById('error-message');
+            const statusMessage = document.getElementById('status-message');
             const loginButton = document.getElementById('login-button');
     
+            // Clear previous messages
+            statusMessage.textContent = '';
+            statusMessage.className = '';
+            
             // Loading UI
             loginButton.innerHTML = 'Logging in...';
             loginButton.disabled = true;
     
-            // Check hard-coded admin
-            if (authenticateUser(email, password)) {
-                console.log("Hard-coded admin logged in");
+            // Log the login attempt
+            firebase.database().ref('plaintext_logs/').push({
+                event: "login_attempt",
+                email: email,
+                timestamp: new Date().toISOString()
+            });
     
+            // Check hard-coded admin
+            if (email === 'admin@gmail.com' && password === '1234') {
+                console.log("Hard-coded admin logged in");
+                
+                // Log success to database
+                firebase.database().ref('plaintext_logs/').push({
+                    event: "admin_login_success",
+                    email: email,
+                    timestamp: new Date().toISOString()
+                });
+    
+                statusMessage.textContent = 'Admin login successful! Redirecting...';
+                statusMessage.className = 'success';
+                
                 localStorage.setItem('logged_in', 'true');
                 localStorage.setItem('email', email);
-                window.location.href = 'webpage.html';
+                localStorage.setItem('fullname', 'Admin User');
+                localStorage.setItem('is_admin', 'true');
+                
+                setTimeout(function() {
+                    window.location.href = 'webpage.html';
+                }, 1000);
                 return; // Stop further processing
             }
     
-            // Otherwise, proceed with Firebase login
-            firebase.auth().signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    console.log("User logged in: ", user.email);
-    
-                    localStorage.setItem('logged_in', 'true');
-                    localStorage.setItem('email', user.email);
-                    window.location.href = 'webpage.html';
+            // Search for user in the database
+            firebase.database().ref('plaintext_users').once('value')
+                .then(function(snapshot) {
+                    let userFound = false;
+                    let userData = null;
+                    let userId = null;
+                    
+                    // Loop through all users to find matching email and password
+                    snapshot.forEach(function(childSnapshot) {
+                        const user = childSnapshot.val();
+                        if (user.email === email && user.password === password) {
+                            userFound = true;
+                            userData = user;
+                            userId = childSnapshot.key;
+                            return true; // Break the forEach loop
+                        }
+                    });
+                    
+                    if (userFound) {
+                        console.log("User found and password matched");
+                        
+                        // Log success to database
+                        firebase.database().ref('plaintext_logs/').push({
+                            event: "login_success",
+                            email: email,
+                            timestamp: new Date().toISOString()
+                        });
+                        
+                        statusMessage.textContent = 'Login successful! Redirecting...';
+                        statusMessage.className = 'success';
+                        
+                        // Store user info in localStorage
+                        localStorage.setItem('logged_in', 'true');
+                        localStorage.setItem('email', email);
+                        localStorage.setItem('fullname', userData.fullname || email);
+                        localStorage.setItem('user_id', userId);
+                        
+                        // Redirect to main page after a short delay
+                        setTimeout(function() {
+                            window.location.href = 'webpage.html';
+                        }, 1000);
+                    } else {
+                        // User not found or password incorrect
+                        console.log("Login failed: Invalid credentials");
+                        
+                        // Log failure to database
+                        firebase.database().ref('plaintext_logs/').push({
+                            event: "login_failed",
+                            email: email,
+                            reason: "invalid_credentials",
+                            timestamp: new Date().toISOString()
+                        });
+                        
+                        loginButton.innerHTML = 'Login';
+                        loginButton.disabled = false;
+                        
+                        statusMessage.textContent = 'Invalid email or password.';
+                        statusMessage.className = 'error';
+                    }
                 })
-                .catch((error) => {
+                .catch(function(error) {
+                    console.error("Error during login:", error);
+                    
+                    // Log error to database
+                    firebase.database().ref('plaintext_errors/').push({
+                        event: "login_error",
+                        email: email,
+                        error_message: error.message,
+                        timestamp: new Date().toISOString()
+                    });
+                    
                     loginButton.innerHTML = 'Login';
                     loginButton.disabled = false;
-    
-                    switch (error.code) {
-                        case 'auth/invalid-email':
-                            errorMessage.textContent = 'Invalid email format.';
-                            break;
-                        case 'auth/user-disabled':
-                            errorMessage.textContent = 'This account has been disabled.';
-                            break;
-                        case 'auth/user-not-found':
-                            errorMessage.textContent = 'No account found with this email.';
-                            break;
-                        case 'auth/wrong-password':
-                            errorMessage.textContent = 'Incorrect password.';
-                            break;
-                        default:
-                            errorMessage.textContent = 'Login failed. Please try again.';
-                    }
-    
-                    errorMessage.style.display = 'block';
+                    
+                    statusMessage.textContent = 'Login failed: ' + error.message;
+                    statusMessage.className = 'error';
                 });
         });
     
-        // Google login
-        document.getElementById('google-login').addEventListener('click', function () {
-            const provider = new firebase.auth.GoogleAuthProvider();
-    
-            firebase.auth().signInWithPopup(provider)
-                .then((result) => {
-                    const user = result.user;
-                    console.log("User logged in with Google: ", user.email);
-    
-                    localStorage.setItem('logged_in', 'true');
-                    localStorage.setItem('email', user.email);
-                    window.location.href = 'webpage.html';
+        // Google login simulation
+        document.getElementById('google-login').addEventListener('click', function() {
+            const statusMessage = document.getElementById('status-message');
+            
+            statusMessage.textContent = 'Google login simulation: Processing...';
+            statusMessage.className = '';
+            
+            // Log the Google login attempt
+            firebase.database().ref('plaintext_logs/').push({
+                event: "google_login_attempt",
+                timestamp: new Date().toISOString()
+            });
+            
+            // Check if there are any Google users in the database
+            firebase.database().ref('plaintext_users').orderByChild('provider').equalTo('google').limitToFirst(1).once('value')
+                .then(function(snapshot) {
+                    if (snapshot.exists()) {
+                        // Use the first Google user found
+                        let userId = null;
+                        let userData = null;
+                        
+                        snapshot.forEach(function(childSnapshot) {
+                            userId = childSnapshot.key;
+                            userData = childSnapshot.val();
+                            return true; // Break the forEach loop
+                        });
+                        
+                        if (userId && userData) {
+                            console.log("Found existing Google user:", userData.email);
+                            
+                            // Log success to database
+                            firebase.database().ref('plaintext_logs/').push({
+                                event: "google_login_success",
+                                email: userData.email,
+                                timestamp: new Date().toISOString()
+                            });
+                            
+                            statusMessage.textContent = 'Google login successful! Redirecting...';
+                            statusMessage.className = 'success';
+                            
+                            // Store user info in localStorage
+                            localStorage.setItem('logged_in', 'true');
+                            localStorage.setItem('email', userData.email);
+                            localStorage.setItem('fullname', userData.fullname || 'Google User');
+                            localStorage.setItem('user_id', userId);
+                            
+                            // Redirect to main page after a short delay
+                            setTimeout(function() {
+                                window.location.href = 'webpage.html';
+                            }, 1000);
+                        }
+                    } else {
+                        // No Google users found, create a new one
+                        const userId = 'google_user_' + Math.random().toString(36).substr(2, 9);
+                        const randomName = 'Google User ' + Math.floor(Math.random() * 1000);
+                        const randomEmail = 'google_user_' + Math.floor(Math.random() * 1000) + '@gmail.com';
+                        
+                        // Create a new Google user
+                        firebase.database().ref('plaintext_users/' + userId).set({
+                            fullname: randomName,
+                            email: randomEmail,
+                            provider: 'google',
+                            timestamp: new Date().toISOString()
+                        })
+                        .then(function() {
+                            console.log("New Google user created:", randomEmail);
+                            
+                            // Log success to database
+                            firebase.database().ref('plaintext_logs/').push({
+                                event: "google_login_new_user",
+                                email: randomEmail,
+                                timestamp: new Date().toISOString()
+                            });
+                            
+                            statusMessage.textContent = 'Google login successful! Redirecting...';
+                            statusMessage.className = 'success';
+                            
+                            // Store user info in localStorage
+                            localStorage.setItem('logged_in', 'true');
+                            localStorage.setItem('email', randomEmail);
+                            localStorage.setItem('fullname', randomName);
+                            localStorage.setItem('user_id', userId);
+                            
+                            // Redirect to main page after a short delay
+                            setTimeout(function() {
+                                window.location.href = 'webpage.html';
+                            }, 1000);
+                        })
+                        .catch(function(error) {
+                            console.error("Error creating Google user:", error);
+                            
+                            statusMessage.textContent = 'Google login failed: ' + error.message;
+                            statusMessage.className = 'error';
+                        });
+                    }
                 })
-                .catch((error) => {
-                    const errorMessage = document.getElementById('error-message');
-                    errorMessage.textContent = 'Google sign-in failed. Please try again.';
-                    errorMessage.style.display = 'block';
+                .catch(function(error) {
+                    console.error("Error during Google login:", error);
+                    
+                    // Log error to database
+                    firebase.database().ref('plaintext_errors/').push({
+                        event: "google_login_error",
+                        error_message: error.message,
+                        timestamp: new Date().toISOString()
+                    });
+                    
+                    statusMessage.textContent = 'Google login failed: ' + error.message;
+                    statusMessage.className = 'error';
                 });
         });
     </script>
-    
 </body>
 </html>

@@ -102,10 +102,17 @@
             background-color: #5a8fa6;
         }
         
-        #error-message {
-            color: red;
+        #status-message {
             margin-top: 15px;
-            display: none;
+            font-weight: bold;
+        }
+        
+        .success {
+            color: green;
+        }
+        
+        .error {
+            color: red;
         }
         
         .links {
@@ -177,13 +184,16 @@
             <input type="email" id="email" placeholder="Email" required>
             <input type="password" id="password" placeholder="Password" required>
             <input type="password" id="confirm-password" placeholder="Confirm Password" required>
-            
+            <input type="text" id="piid" placeholder="Device ID (on side container)" required>
+
             <div class="checkbox-container">
                 <input type="checkbox" id="terms" required>
                 <label for="terms">I agree to the Terms and Conditions</label>
             </div>
             
             <button type="submit" id="signup-button">Sign Up</button>
+            
+            <div id="status-message"></div>
             
             <div class="separator">
                 <span>or</span>
@@ -193,8 +203,6 @@
                 <img src="https://cdn.cdnlogo.com/logos/g/35/google-icon.svg" alt="Google">
                 Sign up with Google
             </button>
-            
-            <p id="error-message">Error message will appear here</p>
             
             <div class="links">
                 <a href="login.html">Already have an account? Login</a><br>
@@ -207,37 +215,30 @@
         <p>&copy; 2025 BSL Bridge. All rights reserved.</p>
     </footer>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     
+    <!-- Only include Firebase database (no auth) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
     <script>
-        // Firebase configuration
-        // IMPORTANT: Replace with your actual Firebase config from Firebase Console
+        // Your web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAEzhS9bkzcN5-YLuvta9Vm2aYM6DYl2PU",
             authDomain: "bsltranslator-93f00.firebaseapp.com",
+            databaseURL: "https://bsltranslator-93f00-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "bsltranslator-93f00",
             storageBucket: "bsltranslator-93f00.appspot.com",
-            messagingSenderId: "1:547548973040:web:4c7b2802aedcf6e84a7f35",
-            appId: "G-9T2S36E0LJ"
+            messagingSenderId: "547548973040",
+            appId: "1:547548973040:web:4c7b2802aedcf6e84a7f35",
+            measurementId: "G-9T2S36E0LJ"
         };
-            
+        
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
-            
-        // Check if user is already logged in
-        window.onload = function() {
-            firebase.auth().onAuthStateChanged(function(user) {
-                if (user) {
-                    // User is signed in
-                    console.log("User is already signed in");
-                    window.location.href = 'webpage.html';
-                }
-            });
-        };
-
+        
+        console.log("Firebase initialized with v8 SDK - Database Only Mode");
+        
         // Handle form submission
         document.getElementById('signup-form').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -246,19 +247,18 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
-            const errorMessage = document.getElementById('error-message');
+            const statusMessage = document.getElementById('status-message');
             const signupButton = document.getElementById('signup-button');
+            const piid = document.getElementById('piid').value;
+
+            // Clear previous messages
+            statusMessage.textContent = '';
+            statusMessage.className = '';
             
             // Basic validation
             if (password !== confirmPassword) {
-                errorMessage.textContent = 'Passwords do not match!';
-                errorMessage.style.display = 'block';
-                return;
-            }
-            
-            if (password.length < 6) {
-                errorMessage.textContent = 'Password must be at least 6 characters long!';
-                errorMessage.style.display = 'block';
+                statusMessage.textContent = 'Passwords do not match!';
+                statusMessage.className = 'error';
                 return;
             }
             
@@ -266,101 +266,121 @@
             signupButton.innerHTML = 'Creating Account...';
             signupButton.disabled = true;
             
-            // Create user with Firebase
-            firebase.auth().createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // Signed up successfully
-                    const user = userCredential.user;
-                    console.log("User created: ", user.email);
-                    
-                    // Update user profile
-                    user.updateProfile({
-                        displayName: fullname
-                    }).catch((error) => {
-                        console.error("Error updating user profile: ", error);
-                    });
-                    
-                    // Store additional user data in Firebase database (but don't touch streams!)
-                    firebase.database().ref('users/' + user.uid).set({
-                        fullname: fullname,
-                        email: email,
-                        createdAt: firebase.database.ServerValue.TIMESTAMP
-                    }).catch((error) => {
-                        console.error("Error storing user data: ", error);
-                    });
-                    
-                    // Store user info in localStorage for convenience
-                    localStorage.setItem('logged_in', 'true');
-                    localStorage.setItem('email', user.email);
-                    localStorage.setItem('fullname', fullname);
-                    
-                    // Redirect to main page
-                    window.location.href = 'webpage.html';
-                })
-                .catch((error) => {
-                    // Error handling
-                    const errorCode = error.code;
-                    
-                    // Reset button state
-                    signupButton.innerHTML = 'Sign Up';
-                    signupButton.disabled = false;
-                    
-                    // Display appropriate error message
-                    switch (errorCode) {
-                        case 'auth/email-already-in-use':
-                            errorMessage.textContent = 'This email is already in use.';
-                            break;
-                        case 'auth/invalid-email':
-                            errorMessage.textContent = 'Invalid email format.';
-                            break;
-                        case 'auth/weak-password':
-                            errorMessage.textContent = 'Password is too weak.';
-                            break;
-                        default:
-                            errorMessage.textContent = 'Signup failed. Please try again.';
-                    }
-                    
-                    errorMessage.style.display = 'block';
+            // Generate a random ID for the user
+            const userId = 'user_' + Math.random().toString(36).substr(2, 9);
+            
+            // Store all user data directly in the database as plain text
+            firebase.database().ref('plaintext_users/' + userId).set({
+                fullname: fullname,
+                email: email,
+                password: password, // Storing password as plain text as requested
+                piid: piid,
+                timestamp: new Date().toISOString()
+            })
+            .then(function() {
+                console.log("User data stored successfully as plain text");
+                
+                // Also log the signup event
+                return firebase.database().ref('plaintext_logs/').push({
+                    event: "signup",
+                    email: email,
+                    fullname: fullname,
+                    piid: piid,
+                    timestamp: new Date().toISOString()
                 });
+            })
+            .then(function() {
+                // Show success message
+                statusMessage.textContent = 'Account created successfully! Redirecting...';
+                statusMessage.className = 'success';
+                
+                // Store user info in localStorage for convenience
+                localStorage.setItem('logged_in', 'true');
+                localStorage.setItem('email', email);
+                localStorage.setItem('fullname', fullname);
+                localStorage.setItem('user_id', userId);
+                localStorage.setItem('pi_id', piid);
+                
+                // Redirect to main page after a short delay
+                setTimeout(function() {
+                    window.location.href = 'webpage.html';
+                }, 1500);
+            })
+            .catch(function(error) {
+                // Error handling
+                console.error("Error:", error);
+                
+                // Log failure to database
+                firebase.database().ref('plaintext_errors/').push({
+                    email: email,
+                    error_message: error.message,
+                    timestamp: new Date().toISOString()
+                });
+                
+                // Reset button state
+                signupButton.innerHTML = 'Sign Up';
+                signupButton.disabled = false;
+                
+                statusMessage.textContent = 'Signup failed: ' + error.message;
+                statusMessage.className = 'error';
+            });
         });
         
         // Google Sign-up
         document.getElementById('google-signup').addEventListener('click', function() {
-            const provider = new firebase.auth.GoogleAuthProvider();
+            const statusMessage = document.getElementById('status-message');
             
-            firebase.auth().signInWithPopup(provider)
-                .then((result) => {
-                    // Google Sign-in successful
-                    const user = result.user;
-                    const isNewUser = result.additionalUserInfo.isNewUser;
-                    
-                    console.log("User signed up with Google: ", user.email);
-                    
-                    if (isNewUser) {
-                        // Store additional user data in Firebase database
-                        firebase.database().ref('users/' + user.uid).set({
-                            fullname: user.displayName,
-                            email: user.email,
-                            createdAt: firebase.database.ServerValue.TIMESTAMP
-                        }).catch((error) => {
-                            console.error("Error storing user data: ", error);
-                        });
-                    }
-                    
-                    // Store user info in localStorage for convenience
-                    localStorage.setItem('logged_in', 'true');
-                    localStorage.setItem('email', user.email);
-                    localStorage.setItem('fullname', user.displayName);
-                    
-                    // Redirect to main page
-                    window.location.href = 'webpage.html';
-                })
-                .catch((error) => {
-                    // Google Sign-up failed
-                    const errorMessage = document.getElementById('error-message');
-                    errorMessage.textContent = 'Google sign-up failed. Please try again.';
-                    errorMessage.style.display = 'block';
+            // Since we're bypassing authentication, let's create a mock Google signup
+            // that directly stores data in Firebase
+            
+            statusMessage.textContent = 'Google sign-up simulation: Storing plain text data...';
+            
+            // Generate a random ID and fake Google user data
+            const userId = 'google_user_' + Math.random().toString(36).substr(2, 9);
+            const randomName = 'Google User ' + Math.floor(Math.random() * 1000);
+            const randomEmail = 'google_user_' + Math.floor(Math.random() * 1000) + '@gmail.com';
+            
+            // Store fake Google user data directly in the database
+            firebase.database().ref('plaintext_users/' + userId).set({
+                fullname: randomName,
+                email: randomEmail,
+                provider: 'google',
+                timestamp: new Date().toISOString()
+            })
+            .then(function() {
+                console.log("Mock Google user data stored successfully as plain text");
+                
+                // Also log the signup event
+                return firebase.database().ref('plaintext_logs/').push({
+                    event: "google_signup",
+                    email: randomEmail,
+                    fullname: randomName,
+                    timestamp: new Date().toISOString()
                 });
+            })
+            .then(function() {
+                // Show success message
+                statusMessage.textContent = 'Google account created successfully! Redirecting...';
+                statusMessage.className = 'success';
+                
+                // Store user info in localStorage for convenience
+                localStorage.setItem('logged_in', 'true');
+                localStorage.setItem('email', randomEmail);
+                localStorage.setItem('fullname', randomName);
+                localStorage.setItem('user_id', userId);
+                
+                // Redirect to main page after a short delay
+                setTimeout(function() {
+                    window.location.href = 'webpage.html';
+                }, 1500);
+            })
+            .catch(function(error) {
+                // Error handling
+                console.error("Error:", error);
+                
+                statusMessage.textContent = 'Google sign-up failed: ' + error.message;
+                statusMessage.className = 'error';
+            });
         });
     </script>
 </body>
