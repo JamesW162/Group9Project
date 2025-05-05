@@ -111,10 +111,31 @@ server layoout that i could not implement cause my git is screwed
 ![image](https://github.com/user-attachments/assets/54ef874d-4d4b-492b-90f5-ad7d237ea908)
 
 `npm install
+
 npm install firebase
+
 npm install express body-parser cors
-node server.js 
-also need to add the bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json from firebase`
+
+node server.js` 
+
+also need to add the bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json from firebase
+Steps to Download Your Firebase Admin SDK JSON File
+- Go to Firebase Console: Visit Firebase Console and log in.
+- Select Your Project: Click on the project associated with bsltranslator-93f00.
+- Open Project Settings:
+- Click on the ⚙️ gear icon in the left sidebar.
+- Choose Project settings.
+- Navigate to Service Accounts:
+- In the Project settings, select the Service accounts tab.
+- Scroll down and find Firebase Admin SDK.
+- Generate a New Private Key:
+- Click Generate new private key.
+- This will download a JSON file (firebase-adminsdk-xxxxx.json).
+Important Notes
+- Handle with care! This file contains sensitive credentials. Do not expose it publicly.
+- Use in your backend: Place it in a secure location where only authorized applications can access it.
+make sure to save it as `bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json`
+
 
 ![image](https://github.com/user-attachments/assets/c707cc54-8388-4c49-bbe7-bee3025bc692)
 
