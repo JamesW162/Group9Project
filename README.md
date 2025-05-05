@@ -1,16 +1,10 @@
-https://users.cs.cf.ac.uk/DaviesWR1/
-
 # SIGN LANGUAGE TRANSLATOR
 ![image](https://github.com/JamesW162/Group9Project/blob/main/logo.png)
-
-At the current moment this is a BSL translator unfortunately it did not allow me to upload
-the data set- GitHub panicked because apparently "_100 files is too much_" so its up to you
-to create the data for this model 
 
 This project uses Mediapipe for hand detection and ML model to classify the gestures. 
 The system then uses real-time video input from a camera to detect hand landmarks and predict
 what letter the hand gesture relates to. 
-It is currently built using version 3.11.9 of Python.
+It is built using version 3.11.9 of Python.
 For example:
 
 ![image](https://github.com/user-attachments/assets/f8b1654a-554f-4194-9add-d3a08eb3a8c6)
@@ -19,9 +13,9 @@ For example:
 
 
 ## Installation 
-to get started, clone this repository, set up a virtual environment and install the dependancies 
+to get started, clone this repository, set up a virtual environment and install the dependencies 
 
-### instilation on a laptop/pc
+### installation on a laptop/pc
 ```
 git clone https://github.com/JamesW162/Group9Project
 cd Group9Project
