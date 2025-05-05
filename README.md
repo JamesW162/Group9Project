@@ -58,7 +58,7 @@ To then make sure everything is installed, run:
 python fix.py
 ```
 
-If there are any missing dependencies, type `y` to fix them. OpenCV sometimes plays around so sometimes you need to run `pip install opencv-python`
+If there are any missing dependencies, type `y` to fix them. OpenCV sometimes plays around so sometimes you need to run `pip install opencv-python`. similarly sk learn screws around as well so `pip install scikit-learn`
 
 Then to start running the server, run
 ```
