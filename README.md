@@ -25,6 +25,9 @@ to get started, clone this repository, set up a virtual environment and install 
 ```
 git clone https://github.com/JamesW162/Group9Project
 cd Group9Project
+```
+open VS code
+```
 python -m venv myenv
 myenv\Scripts\activate
 pip install -r requirements.txt
@@ -34,7 +37,7 @@ npm install
 npm install firebase
 npm install express body-parser cors
 ```
-you then need to add  bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json from firebase
+you then need to add  `bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json` from firebase
 
 Steps to Download Your Firebase Admin SDK JSON File
 - Go to Firebase Console: Visit Firebase Console and log in.
@@ -63,7 +66,10 @@ then to start running the server run
 ```
 node server.js
 ```
-###instilation on the pi
+
+### instilation on the pi
+The `only` files you need from the repository are 
+
 
 
 
