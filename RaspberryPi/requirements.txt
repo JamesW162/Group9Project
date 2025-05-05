@@ -1,0 +1,20 @@
+# BSL Bridge Translation Device Requirements
+# Compatible with Python 3.7 on Raspberry Pi
+
+# Camera components
+picamera==1.13
+
+# Firebase components
+firebase-admin==5.3.0
+
+# GrovePi components
+grovepi==1.4.0
+grove_rgb_lcd==1.0.0
+
+# System dependencies
+RPi.GPIO>=0.7.0
+smbus>=1.1.post2
+pillow>=8.4.0  # Used by PiCamera for image processing
+
+# Note: Some packages may be pre-installed on Raspberry Pi OS
+# If installation fails, try: pip3 install --no-deps [package]
