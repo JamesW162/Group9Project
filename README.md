@@ -60,7 +60,7 @@ to then make sure everything is installed run
 if there are any missing dependancies type `y` to fix them open cv sometimes plays around so sometimes you need to run `pip install opencv-python`
 
 then to start running the server run
-``
+```
 node server.js
 ```
 ###instilation on the pi
