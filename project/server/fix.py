@@ -6,6 +6,7 @@ import sys
 import subprocess
 import platform
 import traceback
+import importlib.util
 
 def check_color_print(message, status, color):
     """Print colored status messages"""
@@ -24,10 +25,23 @@ def check_color_print(message, status, color):
 
 def check_dependency(package_name):
     """Check if a Python package is installed"""
-    try:
-        __import__(package_name)
-        check_color_print(f"✓ {package_name} installed", "OK", "green")
+    # Special case for opencv-python which is imported as cv2
+    if package_name == 'opencv-python':
+        package_to_import = 'cv2'
+    elif package_name == 'pickle':
+        # Pickle is part of the standard library
         return True
+    else:
+        package_to_import = package_name
+    
+    try:
+        spec = importlib.util.find_spec(package_to_import)
+        if spec is not None:
+            check_color_print(f"✓ {package_name} installed", "OK", "green")
+            return True
+        else:
+            check_color_print(f"✗ {package_name} NOT installed", "MISSING", "red")
+            return False
     except ImportError:
         check_color_print(f"✗ {package_name} NOT installed", "MISSING", "red")
         return False
@@ -107,12 +121,7 @@ def run_diagnostic_test(interpreter_path='paste.txt'):
     missing_deps = []
     for dep in dependencies:
         if not check_dependency(dep):
-            if dep == 'opencv-python':
-                # Check alternative package name
-                if not check_dependency('cv2'):
-                    missing_deps.append(dep)
-            else:
-                missing_deps.append(dep)
+            missing_deps.append(dep)
     
     # Check files
     print("\nChecking required files:")
