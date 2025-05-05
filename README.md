@@ -1,5 +1,5 @@
 # SIGN LANGUAGE TRANSLATOR
-![image](https://github.com/JamesW162/Group9Project/blob/main/logo.png)
+![image](https://github.com/JamesW162/Group9Project/blob/main/project/server/website/logo.png)
 
 This project uses Mediapipe for hand detection and ML model to classify the gestures. 
 The system then uses real-time video input from a camera to detect hand landmarks and predict
