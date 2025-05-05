@@ -58,7 +58,10 @@ Important Notes
 **MAKE SURE** to save it as `bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json`
 
 to then make sure everything is installed run
-```python fix.py```
+
+```
+python fix.py
+```
 
 if there are any missing dependancies type `y` to fix them open cv sometimes plays around so sometimes you need to run `pip install opencv-python`
 
