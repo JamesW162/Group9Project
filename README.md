@@ -66,8 +66,20 @@ node server.js
 ```
 
 ### Installation on the pi
-The `only` files you need from the repository are 
+First set up the pi so it looks like this 
+![image](https://github.com/user-attachments/assets/61e809d4-83b1-43b0-ab5d-4606c24fc7a9)
 
+- camera plugged in the raspberry pi camera pins
+- red led button = port D2
+- Grove-LCD RGB Backlight = port I2C
+
+The `only` files you need from the repository are in the **`/RaspberryPi`** file 
+`live_stream_pi_code.py`, `on_off_button_pi_code.py`, `requirements.txt`
+
+```
+pip install -r requirements.txt
+```
+open the `on_off_button_pi_code.py` and run it 
 
 
 
