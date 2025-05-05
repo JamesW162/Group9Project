@@ -109,11 +109,13 @@ what the working webpage looks like now
 server layoout that i could not implement cause my git is screwed
 
 ![image](https://github.com/user-attachments/assets/54ef874d-4d4b-492b-90f5-ad7d237ea908)
-npm install
+
+`npm install
 npm install firebase
 npm install express body-parser cors
 node server.js 
-also need to add the bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json from firebase
+also need to add the bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json from firebase`
+
 ![image](https://github.com/user-attachments/assets/c707cc54-8388-4c49-bbe7-bee3025bc692)
 
 ## Output 
