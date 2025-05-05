@@ -55,8 +55,8 @@ Steps to Download Your Firebase Admin SDK JSON File
 Important Notes
 - Handle with care! This file contains sensitive credentials. Do not expose it publicly.
 - Use in your backend: Place it in a secure location where only authorized applications can access it.
-**MAKE SURE** to save it as `bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json`
-**MAKE SURE** IT IS SAVED IN `Group9Project/project/server`
+- **MAKE SURE** to save it as `bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json`
+- **MAKE SURE** IT IS SAVED IN `Group9Project/project/server`
 
 to then make sure everything is installed run
 
