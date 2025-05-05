@@ -17,6 +17,7 @@ if not cap.isOpened():
 
 print(f'Collecting data in folder: {folder_name}')
 
+# Displays Camera in frame with text prompting the user to start. Exits if camera not found or 'f' pressed.
 while True:
     ret, frame = cap.read()
     if not ret:
@@ -29,8 +30,8 @@ while True:
     if cv2.waitKey(25) == ord('f'):
         break
 
-counter = 0
-while counter < dataset_size:
+# Takes number of pictures specified by dataset_size. stores in data/{label}
+for counter in range(dataset_size):
     ret, frame = cap.read()
     if not ret:
         print("Failed to capture image")
@@ -40,7 +41,6 @@ while counter < dataset_size:
     cv2.waitKey(25)
     cv2.imwrite(os.path.join(DATA_DIR, f'{counter}.jpg'), frame)
 
-    counter += 1
     print(f"Captured image {counter}/{dataset_size}")
 
 print("Image collection complete.")
