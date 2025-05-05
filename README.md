@@ -21,14 +21,50 @@ For example:
 ## Installation 
 to get started, clone this repository, set up a virtual environment and install the dependancies 
 
+### instilation on a laptop/pc
 ```
 git clone https://github.com/JamesW162/Group9Project
 cd Group9Project
 python -m venv myenv
 myenv\Scripts\activate
 pip install -r requirements.txt
-mkdir templates
+cd project
+cd server
+npm install
+npm install firebase
+npm install express body-parser cors
 ```
+you then need to add  bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json from firebase
+
+Steps to Download Your Firebase Admin SDK JSON File
+- Go to Firebase Console: Visit Firebase Console and log in.
+- Select Your Project: Click on the project associated with bsltranslator-93f00.
+- Open Project Settings:
+- Click on the ⚙️ gear icon in the left sidebar.
+- Choose Project settings.
+- Navigate to Service Accounts:
+- In the Project settings, select the Service accounts tab.
+- Scroll down and find Firebase Admin SDK.
+- Generate a New Private Key:
+- Click Generate new private key.
+- This will download a JSON file (firebase-adminsdk-xxxxx.json).
+
+Important Notes
+- Handle with care! This file contains sensitive credentials. Do not expose it publicly.
+- Use in your backend: Place it in a secure location where only authorized applications can access it.
+**MAKE SURE** to save it as `bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json`
+
+to then make sure everything is installed run
+`python fix.py`
+
+if there are any missing dependancies type `y` to fix them open cv sometimes plays around so sometimes you need to run `pip install opencv-python`
+
+then to start running the server run
+``
+node server.js
+```
+###instilation on the pi
+
 
 
 **NOTE PLEASE PUT THE `index.html` AND `logo.png` INTO A FOLDER CALLED `templates` my computer wouldnt let me upload the file for a wierd reason.**
