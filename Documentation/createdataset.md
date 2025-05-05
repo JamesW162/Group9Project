@@ -4,32 +4,6 @@
 
 `create_dataset.py` is a Python script that processes images of hand gestures to create a machine learning dataset. It uses the MediaPipe library to detect hand landmarks in images and converts these landmarks into feature vectors that can be used for training machine learning models for hand gesture recognition.
 
-## Dependencies
-
-- OpenCV (`cv2`): For image loading and processing
-- MediaPipe (`mediapipe`): For hand landmark detection 
-- Matplotlib (`pyplot`): For visualization (optional)
-- Pickle: For saving the processed dataset
-
-## Directory Structure
-
-The script expects the following directory structure:
-```
-./
-├── create_dataset.py
-└── data/
-    ├── gesture1/
-    │   ├── img1.jpg
-    │   ├── img2.jpg
-    │   └── ...
-    ├── gesture2/
-    │   ├── img1.jpg
-    │   └── ...
-    └── ...
-```
-
-Each subdirectory in the `data` directory represents a class/label (gesture type), and contains images of that particular hand gesture.
-
 ## Functionality
 
 ### Hand Landmark Detection
