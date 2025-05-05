@@ -227,6 +227,33 @@
                 window.location.href = 'webpage.html';
             }
         };
+        
+        // Function to find user's PIID from plaintext_logs
+        function findUserPIID(email, callback) {
+            // Search for signup events with this email
+            firebase.database().ref('plaintext_logs').orderByChild('email').equalTo(email).once('value')
+                .then(function(snapshot) {
+                    const logs = snapshot.val();
+                    let foundPIID = null;
+                    
+                    if (logs) {
+                        // Look through logs for a signup event
+                        Object.values(logs).forEach(function(log) {
+                            if (log.event === 'signup' && log.piid) {
+                                foundPIID = log.piid;
+                                console.log("Found PIID for user:", foundPIID);
+                            }
+                        });
+                    }
+                    
+                    // Call the callback with the result
+                    callback(foundPIID);
+                })
+                .catch(function(error) {
+                    console.error("Error finding user PIID:", error);
+                    callback(null);
+                });
+        }
     
         // Handle login form
         document.getElementById('login-form').addEventListener('submit', function(e) {
@@ -267,7 +294,7 @@
                 statusMessage.className = 'success';
                 
                 localStorage.setItem('logged_in', 'true');
-                localStorage.setItem('email', email);
+                localStorage.setItem('user_email', email); // Changed from 'email' to 'user_email'
                 localStorage.setItem('fullname', 'Admin User');
                 localStorage.setItem('is_admin', 'true');
                 
@@ -305,19 +332,28 @@
                             timestamp: new Date().toISOString()
                         });
                         
-                        statusMessage.textContent = 'Login successful! Redirecting...';
-                        statusMessage.className = 'success';
-                        
-                        // Store user info in localStorage
-                        localStorage.setItem('logged_in', 'true');
-                        localStorage.setItem('email', email);
-                        localStorage.setItem('fullname', userData.fullname || email);
-                        localStorage.setItem('user_id', userId);
-                        
-                        // Redirect to main page after a short delay
-                        setTimeout(function() {
-                            window.location.href = 'webpage.html';
-                        }, 1000);
+                        // Look up user's PIID
+                        findUserPIID(email, function(piid) {
+                            // Store user info in localStorage with the correct keys
+                            localStorage.setItem('logged_in', 'true');
+                            localStorage.setItem('user_email', email); // Changed from 'email' to 'user_email'
+                            localStorage.setItem('fullname', userData.fullname || email);
+                            localStorage.setItem('user_id', userId);
+                            
+                            // Store PIID if found
+                            if (piid) {
+                                localStorage.setItem('user_piid', piid);
+                                console.log("PIID stored in localStorage:", piid);
+                            }
+                            
+                            statusMessage.textContent = 'Login successful! Redirecting...';
+                            statusMessage.className = 'success';
+                            
+                            // Redirect to main page after a short delay
+                            setTimeout(function() {
+                                window.location.href = 'webpage.html';
+                            }, 1000);
+                        });
                     } else {
                         // User not found or password incorrect
                         console.log("Login failed: Invalid credentials");
@@ -393,19 +429,28 @@
                                 timestamp: new Date().toISOString()
                             });
                             
-                            statusMessage.textContent = 'Google login successful! Redirecting...';
-                            statusMessage.className = 'success';
-                            
-                            // Store user info in localStorage
-                            localStorage.setItem('logged_in', 'true');
-                            localStorage.setItem('email', userData.email);
-                            localStorage.setItem('fullname', userData.fullname || 'Google User');
-                            localStorage.setItem('user_id', userId);
-                            
-                            // Redirect to main page after a short delay
-                            setTimeout(function() {
-                                window.location.href = 'webpage.html';
-                            }, 1000);
+                            // Look up user's PIID
+                            findUserPIID(userData.email, function(piid) {
+                                // Store user info in localStorage with the correct keys
+                                localStorage.setItem('logged_in', 'true');
+                                localStorage.setItem('user_email', userData.email); // Changed from 'email' to 'user_email'
+                                localStorage.setItem('fullname', userData.fullname || 'Google User');
+                                localStorage.setItem('user_id', userId);
+                                
+                                // Store PIID if found
+                                if (piid) {
+                                    localStorage.setItem('user_piid', piid);
+                                    console.log("PIID stored in localStorage:", piid);
+                                }
+                                
+                                statusMessage.textContent = 'Google login successful! Redirecting...';
+                                statusMessage.className = 'success';
+                                
+                                // Redirect to main page after a short delay
+                                setTimeout(function() {
+                                    window.location.href = 'webpage.html';
+                                }, 1000);
+                            });
                         }
                     } else {
                         // No Google users found, create a new one
@@ -433,9 +478,9 @@
                             statusMessage.textContent = 'Google login successful! Redirecting...';
                             statusMessage.className = 'success';
                             
-                            // Store user info in localStorage
+                            // Store user info in localStorage with the correct keys
                             localStorage.setItem('logged_in', 'true');
-                            localStorage.setItem('email', randomEmail);
+                            localStorage.setItem('user_email', randomEmail); // Changed from 'email' to 'user_email'
                             localStorage.setItem('fullname', randomName);
                             localStorage.setItem('user_id', userId);
                             

@@ -157,7 +157,19 @@
             border-radius: 4px;
             display: none;
         }
-
+        .device-info {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+            background-color: #e9f7ff;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .user-account {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -188,13 +200,18 @@
                 <span id="interpreterStatusText">BSL Interpreter: Waiting for connection</span>
             </div>
             
+            <div class="device-info" id="deviceInfo">
+                <div>Linked Device ID: <span id="devicePIID">Loading...</span></div>
+                <div class="user-account" id="userAccount">Account: Not logged in</div>
+            </div>
+            
             <h3>BSL Translator Live Stream</h3>
             
             <div id="streamSelector">
-                <label for="streamId">Select Stream: </label>
+                <label for="streamId">Your Stream: </label>
                 <select id="streamId"></select>
                 <button id="connectBtn" class="stream-btn">Connect</button>
-                <button id="refreshBtn" class="stream-btn">Refresh Streams</button>
+                <button id="refreshBtn" class="stream-btn">Refresh Stream</button>
                 <button id="startInterpreterBtn" class="stream-btn">Start Interpreter</button>
             </div>
             
@@ -202,8 +219,6 @@
                 <img id="videoFrame" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=" alt="Video Stream">
                 <p id="noStreamMessage">No stream data available. Please connect to a stream.</p>
             </div>
-            
-            <!-- Stream info will be logged to the browser console -->
         </div>
     </div>
     
@@ -222,6 +237,8 @@
         // Logout functionality
         document.getElementById('logout-btn').addEventListener('click', function() {
             localStorage.removeItem('logged_in');
+            localStorage.removeItem('user_email');
+            localStorage.removeItem('user_piid');
             window.location.href = 'login.html';
         });
         
@@ -235,6 +252,8 @@
         const progressBar = document.querySelector(".progress-bar");
         const livestreamContainer = document.getElementById("livestreamContainer");
         const errorMessage = document.getElementById("errorMessage");
+        const devicePIID = document.getElementById("devicePIID");
+        const userAccount = document.getElementById("userAccount");
         
         // Add a loading effect
         let dots = "";
@@ -292,6 +311,17 @@
             }
         }
         
+        // Helper function to compare PIIDs regardless of type (string or number)
+        function piidMatches(piid1, piid2) {
+            // Handle null/undefined values
+            if (piid1 === null || piid1 === undefined || piid2 === null || piid2 === undefined) {
+                return false;
+            }
+            
+            // Convert both to strings for comparison
+            return String(piid1) === String(piid2);
+        }
+        
         // Firebase configuration and livestream functionality
         function initializeFirebase() {
             // Firebase configuration
@@ -316,12 +346,6 @@
             const startInterpreterBtn = document.getElementById('startInterpreterBtn');
             const videoFrame = document.getElementById('videoFrame');
             const noStreamMessage = document.getElementById('noStreamMessage');
-            const streamStatus = document.getElementById('streamStatus');
-            const resolution = document.getElementById('resolution');
-            const frameRate = document.getElementById('frameRate');
-            const startTime = document.getElementById('startTime');
-            const frameCount = document.getElementById('frameCount');
-            const lastUpdate = document.getElementById('lastUpdate');
             const interpreterStatusIndicator = document.getElementById('interpreterStatusIndicator');
             const interpreterStatusText = document.getElementById('interpreterStatusText');
             
@@ -331,51 +355,128 @@
             let currentStreamId = null;
             let interpreterActive = false;
             
+            // Get user's email from localStorage (set during login)
+            const userEmail = localStorage.getItem('user_email');
+            
+            // Display the user's email
+            userAccount.textContent = 'Account: ' + (userEmail || 'Not logged in');
+            
             // Set up translation update checker
             setInterval(checkForTranslationUpdates, 1000);
-            
-            // Load available streams on initialization
-            loadStreams();
             
             // Connect button event
             connectBtn.addEventListener('click', connectToStream);
             
             // Refresh streams button event
-            refreshBtn.addEventListener('click', loadStreams);
+            refreshBtn.addEventListener('click', loadUserPIID);
             
             // Start Interpreter button event
             startInterpreterBtn.addEventListener('click', startInterpreter);
             
-            // Load streams from Firebase
-            function loadStreams() {
+            // Start the process by loading the user's PIID
+            loadUserPIID();
+            
+            // Load user PIID and then load streams
+            function loadUserPIID() {
+                const userPIID = localStorage.getItem('user_piid');
+                
+                if (userPIID) {
+                    // PIID already in localStorage
+                    devicePIID.textContent = userPIID;
+                    loadUserStreams(userPIID);
+                } else {
+                    // PIID not found, need to look it up
+                    devicePIID.textContent = "Looking up...";
+                    
+                    if (!userEmail) {
+                        devicePIID.textContent = "Error: No email";
+                        displayError("No email associated with your account. Please log out and log in again.");
+                        return;
+                    }
+                    
+                    // Look up PIID from Firebase
+                    const logsRef = database.ref('/plaintext_logs');
+                    
+                    logsRef.orderByChild('email').equalTo(userEmail).once('value')
+                    .then(snapshot => {
+                        const logs = snapshot.val();
+                        let foundPIID = null;
+                        
+                        if (logs) {
+                            // Look for signup events
+                            Object.values(logs).forEach(log => {
+                                if (log.event === 'signup' && log.piid) {
+                                    foundPIID = log.piid;
+                                }
+                            });
+                            
+                            if (foundPIID) {
+                                // Save the PIID
+                                localStorage.setItem('user_piid', foundPIID);
+                                
+                                // Update the display
+                                devicePIID.textContent = foundPIID;
+                                
+                                // Load streams with the found PIID
+                                loadUserStreams(foundPIID);
+                            } else {
+                                // No signup event found
+                                devicePIID.textContent = "Not found";
+                                displayError("Could not find your device ID. Please contact support.");
+                            }
+                        } else {
+                            // No records found for this email
+                            devicePIID.textContent = "Not found";
+                            displayError("No account records found for your email address.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error looking up user:', error);
+                        devicePIID.textContent = "Error";
+                        displayError('Error looking up your account information.');
+                    });
+                }
+            }
+            
+            // Load streams from Firebase that match the user's PIID
+            function loadUserStreams(piid) {
+                if (!piid) {
+                    displayError('No Device ID assigned. Cannot load streams.');
+                    return;
+                }
+                
                 const streamsRef = database.ref('/streams');
                 streamsRef.once('value', (snapshot) => {
                     // Clear previous options
-                    streamSelector.innerHTML = '<option value="">Select a stream...</option>';
+                    streamSelector.innerHTML = '<option value="">Select your stream...</option>';
                     
                     const streams = snapshot.val();
                     if (streams) {
+                        let userStreamFound = false;
+                        
                         Object.keys(streams).forEach(streamId => {
-                            const option = document.createElement('option');
-                            option.value = streamId;
+                            const streamData = streams[streamId];
+                            const streamPIID = streamData.piid;
                             
-                            // Add status indicator to the stream option
-                            const status = streams[streamId].status || 'unknown';
-                            option.textContent = `${streamId} (${status})`;
-                            
-                            // Add data attributes for more info
-                            if (streams[streamId].started_at) {
-                                const startDate = new Date(streams[streamId].started_at);
-                                option.dataset.startTime = startDate.toLocaleString();
+                            // Check if this stream belongs to the user's PIID
+                            if (piidMatches(streamPIID, piid)) {
+                                userStreamFound = true;
+                                const option = document.createElement('option');
+                                option.value = streamId;
+                                
+                                // Add status indicator to the stream option
+                                const status = streamData.status || 'unknown';
+                                option.textContent = `${streamId} (${status})`;
+                                
+                                streamSelector.appendChild(option);
                             }
-                            
-                            streamSelector.appendChild(option);
                         });
                         
-                        console.log('Streams loaded:', Object.keys(streams).length);
+                        if (!userStreamFound) {
+                            displayError(`No streams available for your device (PIID: ${piid}). You may need to create a stream first.`);
+                        }
                     } else {
-                        console.log('No streams found in database');
-                        displayError('No streams available in Firebase. You may need to create a stream first.');
+                        displayError('No streams available. You may need to create a stream first.');
                     }
                 }).catch(error => {
                     console.error('Error loading streams:', error);
@@ -411,7 +512,13 @@
                         return;
                     }
                     
-                    updateStreamInfo(streamData);
+                    const userPIID = localStorage.getItem('user_piid');
+                    
+                    // Verify this stream belongs to the user's PIID
+                    if (!piidMatches(streamData.piid, userPIID)) {
+                        displayError('This stream is not associated with your device.');
+                        return;
+                    }
                     
                     // Set up listener for the latest frame
                     latestFrameRef = database.ref(`/streams/${streamId}/latest_frame`);
@@ -497,29 +604,6 @@
             function displayFrame(frameData) {
                 // Update the image source with base64 data
                 videoFrame.src = `data:image/jpeg;base64,${frameData.data}`;
-                
-                // Log frame info to console
-                console.log('Frame Info:');
-                console.log('Frame Number:', frameData.frame_number);
-                const updateTime = new Date(frameData.timestamp);
-                console.log('Last Update:', updateTime.toLocaleString());
-            }
-            
-            // Update stream information display (now to console)
-            function updateStreamInfo(streamData) {
-                // Log stream info to console instead of displaying on page
-                console.log('Stream Information:');
-                console.log('Resolution:', streamData.resolution || 'Unknown');
-                console.log('Frame Rate:', streamData.frame_rate || 'Unknown');
-                
-                if (streamData.started_at) {
-                    const startDate = new Date(streamData.started_at);
-                    console.log('Started:', startDate.toLocaleString());
-                } else {
-                    console.log('Started: Unknown');
-                }
-                
-                updateStatus(streamData.status || 'unknown');
             }
             
             // Update status display
