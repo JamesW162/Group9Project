@@ -205,8 +205,8 @@ def base64_to_image(base64_string):
         print(f"Error converting base64 to image: {e}")
         return None
 
-def get_available_streams():
-    """Get list of active streams from Firebase."""
+def get_available_streams(piid=None):
+    """Get list of active streams from Firebase, optionally filtered by PIID."""
     try:
         streams_ref = db.reference('/streams')
         streams = streams_ref.get()
@@ -215,6 +215,12 @@ def get_available_streams():
         if streams:
             for stream_id, stream_data in streams.items():
                 status = stream_data.get('status', 'unknown')
+                # Only include streams for the specified PIID if provided
+                if piid:
+                    stream_piid = stream_data.get('piid', None)
+                    if stream_piid != piid:
+                        continue
+                
                 if status == 'active':
                     active_streams[stream_id] = stream_data
         
@@ -369,6 +375,13 @@ def start_stream_processing(stream_id):
     """Start processing frames from the selected stream."""
     print(f"Starting to process stream: {stream_id}")
     
+    # Get stream info to verify PIID
+    stream_ref = db.reference(f'/streams/{stream_id}')
+    stream_data = stream_ref.get()
+    
+    if stream_data and 'piid' in stream_data:
+        print(f"Stream PIID: {stream_data['piid']}")
+    
     # Get reference to the latest frame
     latest_frame_ref = db.reference(f'/streams/{stream_id}/latest_frame')
     
@@ -470,9 +483,102 @@ def start_stream_processing(stream_id):
     
     print("Stream processing ended")
 
+def get_device_piid():
+    """Get the PIID (Raspberry Pi ID) of the current device."""
+    try:
+        # First try to read from a config file
+        config_paths = [
+            'device_config.json',
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), 'device_config.json'),
+            os.path.join(os.getcwd(), 'device_config.json')
+        ]
+        
+        for config_path in config_paths:
+            if os.path.exists(config_path):
+                try:
+                    with open(config_path, 'r') as f:
+                        config = json.load(f)
+                        if 'piid' in config:
+                            print(f"PIID loaded from config file: {config_path}")
+                            return config['piid']
+                except Exception as e:
+                    print(f"Error reading config from {config_path}: {e}")
+                    continue
+        
+        # If no config file, create one with a default value
+        # For demonstration, we'll default to PIID "1"
+        default_piid = "1"
+        
+        try:
+            # Try to get the machine's hostname or serial number
+            # For Raspberry Pi, we can use the serial number from /proc/cpuinfo
+            if os.path.exists('/proc/cpuinfo'):
+                with open('/proc/cpuinfo', 'r') as f:
+                    for line in f:
+                        if line.startswith('Serial'):
+                            # Use the last 8 characters of the serial number
+                            default_piid = line.split(':')[1].strip()[-8:]
+                            break
+            
+            # Fall back to hostname if no serial number
+            if default_piid == "1":
+                import socket
+                hostname = socket.gethostname()
+                if hostname:
+                    # Use a hash of the hostname to generate a unique ID
+                    import hashlib
+                    default_piid = str(int(hashlib.md5(hostname.encode()).hexdigest(), 16) % 10000)
+        except Exception as e:
+            print(f"Error generating device PIID: {e}")
+        
+        # Save the PIID to a config file
+        try:
+            # Create a new config file in the current directory
+            config_path = os.path.join(os.getcwd(), 'device_config.json')
+            with open(config_path, 'w') as f:
+                json.dump({'piid': default_piid}, f)
+            print(f"Created new config file with PIID: {default_piid}")
+        except Exception as e:
+            print(f"Error saving PIID to config: {e}")
+        
+        return default_piid
+    except Exception as e:
+        print(f"Error in get_device_piid: {e}")
+        return "1"  # Default fallback
+
+def update_stream_piid(stream_id, piid):
+    """Update the PIID of a stream in Firebase."""
+    try:
+        if not stream_id or not piid:
+            print("Stream ID and PIID are required")
+            return False
+        
+        stream_ref = db.reference(f'/streams/{stream_id}')
+        current_data = stream_ref.get()
+        
+        if not current_data:
+            print(f"Stream {stream_id} not found")
+            return False
+        
+        # Update the PIID
+        stream_ref.update({'piid': piid})
+        print(f"Stream {stream_id} updated with PIID: {piid}")
+        return True
+    except Exception as e:
+        print(f"Error updating stream PIID: {e}")
+        return False
+
 def main():
     """Main function to start the BSL interpreter."""
     print("BSL Bridge Integration Starting...")
+    
+    # Get the device PIID
+    device_piid = get_device_piid()
+    if device_piid:
+        print(f"Device PIID: {device_piid}")
+    else:
+        print("Warning: Could not determine device PIID")
+        device_piid = "1"  # Default fallback
     
     # Use the stream ID from command line or file
     stream_id = input_stream_id
@@ -486,11 +592,15 @@ def main():
         
         if not stream_data:
             print(f"Stream {stream_id} not found!")
-            available_streams = get_available_streams()
+            # If we have a device PIID, only show streams for this device
+            available_streams = get_available_streams(piid=device_piid) if device_piid else get_available_streams()
+            
             if available_streams:
                 print("\nAvailable active streams:")
                 for i, (available_id, stream_data) in enumerate(available_streams.items(), 1):
-                    print(f"{i}. {available_id}")
+                    piid_info = f" (PIID: {stream_data.get('piid', 'unknown')})" if 'piid' in stream_data else ""
+                    print(f"{i}. {available_id}{piid_info}")
+                
                 # Let user select a stream
                 selection = input("\nSelect a stream by number (or press Enter to exit): ")
                 if selection.strip():
@@ -508,8 +618,92 @@ def main():
                     print("No selection made, exiting.")
                     return
             else:
-                print("No active streams available. Please start a stream first.")
-                return
+                print(f"No active streams available for this device (PIID: {device_piid}).")
+                
+                # Get all streams without filtering by PIID
+                all_streams = get_available_streams()
+                if all_streams:
+                    print("\nAvailable active streams from all devices:")
+                    for i, (available_id, stream_data) in enumerate(all_streams.items(), 1):
+                        piid_info = f" (PIID: {stream_data.get('piid', 'unknown')})" if 'piid' in stream_data else ""
+                        print(f"{i}. {available_id}{piid_info}")
+                    
+                    print("\nWould you like to:")
+                    print("1. Select a stream from another device")
+                    print("2. Assign a stream to this device")
+                    print("3. Exit")
+                    
+                    action = input("\nEnter your choice (1-3): ")
+                    
+                    if action == "1":
+                        # Select a stream from another device
+                        selection = input("\nSelect a stream by number: ")
+                        try:
+                            index = int(selection) - 1
+                            if 0 <= index < len(all_streams):
+                                stream_id = list(all_streams.keys())[index]
+                            else:
+                                print("Invalid selection, exiting.")
+                                return
+                        except ValueError:
+                            print("Invalid input, exiting.")
+                            return
+                    elif action == "2":
+                        # Assign a stream to this device
+                        selection = input("\nSelect a stream to assign to this device: ")
+                        try:
+                            index = int(selection) - 1
+                            if 0 <= index < len(all_streams):
+                                stream_id = list(all_streams.keys())[index]
+                                # Update the stream's PIID
+                                if update_stream_piid(stream_id, device_piid):
+                                    print(f"Stream {stream_id} is now assigned to this device.")
+                                else:
+                                    print("Failed to assign stream to this device, continuing anyway.")
+                            else:
+                                print("Invalid selection, exiting.")
+                                return
+                        except ValueError:
+                            print("Invalid input, exiting.")
+                            return
+                    else:
+                        print("Exiting.")
+                        return
+                else:
+                    print("No active streams available. Please start a stream first.")
+                    return
+        else:
+            # Check if the stream has a PIID
+            stream_piid = stream_data.get('piid')
+            
+            # If no PIID, assign this device's PIID
+            if not stream_piid:
+                print(f"Stream {stream_id} has no PIID assigned. Assigning current device PIID: {device_piid}")
+                update_stream_piid(stream_id, device_piid)
+            # If PIID doesn't match this device
+            elif stream_piid != device_piid:
+                print(f"Warning: Stream {stream_id} belongs to PIID {stream_piid}, not this device ({device_piid}).")
+                
+                # Ask user if they want to reassign or continue
+                print("\nWould you like to:")
+                print("1. Reassign this stream to your device")
+                print("2. Continue using this stream anyway")
+                print("3. Exit")
+                
+                action = input("\nEnter your choice (1-3): ")
+                
+                if action == "1":
+                    # Reassign stream to this device
+                    if update_stream_piid(stream_id, device_piid):
+                        print(f"Stream {stream_id} is now assigned to this device.")
+                    else:
+                        print("Failed to reassign stream. Continuing anyway.")
+                elif action == "2":
+                    print("Continuing with mismatched PIID.")
+                else:
+                    print("Exiting.")
+                    return
+                
     except Exception as e:
         print(f"Error checking stream: {e}")
         return
