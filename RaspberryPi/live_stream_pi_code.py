@@ -8,11 +8,12 @@ from picamera import PiCamera
 import firebase_admin
 from firebase_admin import credentials, db
 # Configuration
-FRAME_RATE = 3  # Lower frames per second to avoid database overload DO NOT GO HIGHER THAN 5
+FRAME_RATE = 5  # Lower frames per second to avoid database overload DO NOT GO HIGHER THAN 5
 RESOLUTION = (320, 240)  # Lower resolution for better performance with database
 QUALITY = 20  # JPEG compression quality (lower = smaller file size)
 MAX_STREAM_TIME = 300  # Maximum streaming time in seconds (5 minutes)
 STREAM_ID = datetime.now().strftime("%Y%m%d_%H%M%S")  # Unique ID for this stream
+PIID=1
 # Initialize Firebase with explicit parameters
 # Path to your service account key file
 cred_path = '/home/pi/Desktop/codes/bsltranslator-93f00-firebase-adminsdk-fbsvc-e79666a3dd.json'
@@ -73,7 +74,8 @@ class VideoStreamer:
             'status': 'active',
             'started_at': {'.sv': 'timestamp'},
             'resolution': f"{RESOLUTION[0]}x{RESOLUTION[1]}",
-            'frame_rate': FRAME_RATE
+            'frame_rate': FRAME_RATE,
+            'piid': PIID
         })
         # Start streaming in a separate thread
         stream_thread = threading.Thread(target=self._stream_frames)
