@@ -26,7 +26,7 @@ to get started, clone this repository, set up a virtual environment and install 
 git clone https://github.com/JamesW162/Group9Project
 cd Group9Project
 ```
-open VS code
+open VS code in the Group9Project and now on run the commands in the terminals
 ```
 python -m venv myenv
 myenv\Scripts\activate
