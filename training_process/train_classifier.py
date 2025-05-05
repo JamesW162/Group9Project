@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score
 import numpy as np
 
 # Specify the full relative path to the data.pickle file
-data_pickle_path = r"data.pickle"
+data_pickle_path = r"C:\Coding Programs\Python\cm2305\Group9Project\training_process\data.pickle"
 data_dict = pickle.load(open(data_pickle_path, 'rb'))
 
 # The dataset has samples with 84 datapoints (2 hands, 42 per hand)
