@@ -16,6 +16,7 @@ eye_indices = [33, 133, 362, 263]   # One point for each eye
 mouth_indices = [13, 14, 308, 78]  # Four points for the mouth
 
 while cap.isOpened():
+    # Exit program if camera data not found
     ret, frame = cap.read()
     if not ret:
         break
