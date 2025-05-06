@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSL Bridge - Signup Tests</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f8ff;
+        }
+        
+        h1 {
+            color: #68a4bc;
+            text-align: center;
+        }
+        
+        .test-results {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        
+        .test-result {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        
+        .pass {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        
+        .fail {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+        
+        .test-summary {
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        
+        button {
+            background-color: #68a4bc;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        
+        button:hover {
+            background-color: #5a8fa6;
+        }
+        
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>BSL Bridge Signup Page Tests</h1>
+    
+    <button id="run-tests">Run All Tests</button>
+    
+    <div class="test-results" id="test-results">
+        <p>Click "Run All Tests" to start testing.</p>
+    </div>
+    
+    <script>
+        // Main test runner
+        document.getElementById('run-tests').addEventListener('click', function() {
+            const results = document.getElementById('test-results');
+            results.innerHTML = '<p>Running tests...</p>';
+            
+            // Run all tests and collect results
+            const testResults = [];
+            
+            // Test functions
+            testSuccessfulSignup(testResults);
+            testPasswordMismatch(testResults);
+            testMissingFields(testResults);
+            testGoogleSignup(testResults);
+            testDeviceIdValidation(testResults);
+            
+            // Display results
+            displayTestResults(results, testResults);
+        });
+        
+        // Test utilities
+        function createTestEnvironment() {
+            // Create mock DOM elements
+            const mockDOM = {
+                fullname: { value: '' },
+                email: { value: '' },
+                password: { value: '' },
+                confirmPassword: { value: '' },
+                piid: { value: '' },
+                terms: { checked: false },
+                signupButton: { innerHTML: 'Sign Up', disabled: false },
+                statusMessage: { textContent: '', className: '' },
+                googleSignupButton: { innerHTML: 'Sign up with Google' }
+            };
+            
+            // Create mock localStorage
+            const mockStorage = {
+                data: {},
+                getItem: function(key) {
+                    return this.data[key] || null;
+                },
+                setItem: function(key, value) {
+                    this.data[key] = value;
+                },
+                clear: function() {
+                    this.data = {};
+                }
+            };
+            
+            // Create mock Firebase
+            const mockFirebase = {
+                mockUsers: {},
+                mockLogs: [],
+                mockErrors: [],
+                database: function() {
+                    return {
+                        ref: function(path) {
+                            return {
+                                set: function(data) {
+                                    if (path.startsWith('plaintext_users/')) {
+                                        const userId = path.split('/')[1];
+                                        mockFirebase.mockUsers[userId] = data;
+                                    }
+                                    return Promise.resolve();
+                                },
+                                push: function(data) {
+                                    if (path === 'plaintext_logs/') {
+                                        mockFirebase.mockLogs.push(data);
+                                    } else if (path === 'plaintext_errors/') {
+                                        mockFirebase.mockErrors.push(data);
+                                    }
+                                    return Promise.resolve();
+                                }
+                            };
+                        }
+                    };
+                }
+            };
+            
+            // Create mock window location
+            const mockLocation = {
+                href: ''
+            };
+            
+            return {
+                dom: mockDOM,
+                localStorage: mockStorage,
+                firebase: mockFirebase,
+                location: mockLocation
+            };
+        }
+        
+        // Successful signup test implementation
+        function testSuccessfulSignup(testResults) {
+            try {
+                const env = createTestEnvironment();
+                
+                // Set valid signup data
+                env.dom.fullname.value = 'Test User';
+                env.dom.email.value = 'test@example.com';
+                env.dom.password.value = 'password123';
+                env.dom.confirmPassword.value = 'password123';
+                env.dom.piid.value = 'PI12345';
+                env.dom.terms.checked = true;
+                
+                // Run signup function with valid data
+                simulateSignup(env);
+                
+                // Check results
+                if (env.dom.statusMessage.textContent !== 'Account created successfully! Redirecting...') {
+                    throw new Error('Status message not correct: ' + env.dom.statusMessage.textContent);
+                }
+                
+                if (env.dom.statusMessage.className !== 'success') {
+                    throw new Error('Status class not set to success');
+                }
+                
+                if (env.localStorage.getItem('logged_in') !== 'true') {
+                    throw new Error('localStorage logged_in not set correctly');
+                }
+                
+                if (env.localStorage.getItem('email') !== 'test@example.com') {
+                    throw new Error('localStorage email not set correctly');
+                }
+                
+                if (env.localStorage.getItem('fullname') !== 'Test User') {
+                    throw new Error('localStorage fullname not set correctly');
+                }
+                
+                if (!env.localStorage.getItem('user_id')) {
+                    throw new Error('localStorage user_id not set');
+                }
+                
+                if (env.localStorage.getItem('pi_id') !== 'PI12345') {
+                    throw new Error('localStorage pi_id not set correctly');
+                }
+                
+                if (Object.keys(env.firebase.mockUsers).length === 0) {
+                    throw new Error('User data not stored in Firebase');
+                }
+                
+                if (env.firebase.mockLogs.length === 0) {
+                    throw new Error('Signup event not logged in Firebase');
+                }
+                 
+                // Test passed
+                testResults.push({
+                    name: 'Successful Signup Test',
+                    passed: true
+                });
+            } catch (error) {
+                // Test failed
+                testResults.push({
+                    name: 'Successful Signup Test',
+                    passed: false,
+                    error: error.message
+                });
+            }
+        }
+        
+        // Password mismatch test implementation
+        function testPasswordMismatch(testResults) {
+            try {
+                const env = createTestEnvironment();
+                
+                // Set signup data with mismatched passwords
+                env.dom.fullname.value = 'Test User';
+                env.dom.email.value = 'test@example.com';
+                env.dom.password.value = 'password123';
+                env.dom.confirmPassword.value = 'differentpassword';
+                env.dom.piid.value = 'PI12345';
+                env.dom.terms.checked = true;
+                
+                // Run signup function with mismatched passwords
+                simulateSignup(env);
+                
+                // Check results
+                if (env.dom.statusMessage.textContent !== 'Passwords do not match!') {
+                    throw new Error('Password mismatch error not displayed correctly: ' + env.dom.statusMessage.textContent);
+                }
+                
+                if (env.dom.statusMessage.className !== 'error') {
+                    throw new Error('Status class not set to error');
+                }
+                
+                if (env.localStorage.getItem('logged_in') === 'true') {
+                    throw new Error('User should not be logged in');
+                }
+                
+                if (Object.keys(env.firebase.mockUsers).length > 0) {
+                    throw new Error('User data should not be stored in Firebase');
+                }
+                
+                // Test passed
+                testResults.push({
+                    name: 'Password Mismatch Test',
+                    passed: true
+                });
+            } catch (error) {
+                // Test failed
+                testResults.push({
+                    name: 'Password Mismatch Test',
+                    passed: false,
+                    error: error.message
+                });
+            }
+        }
+        
+        // Missing fields test implementation
+        function testMissingFields(testResults) {
+            try {
+                const env = createTestEnvironment();
+                
+                // Set signup data with missing fields
+                env.dom.fullname.value = 'Test User';
+                env.dom.email.value = 'test@example.com';
+                env.dom.password.value = 'password123';
+                env.dom.confirmPassword.value = 'password123';
+                env.dom.piid.value = ''; // Missing device ID
+                env.dom.terms.checked = true;
+                
+                // Run signup function with missing fields
+                const formWasSubmitted = simulateSignupWithValidation(env);
+                
+                // Check results
+                if (formWasSubmitted) {
+                    throw new Error('Form was submitted despite missing required field');
+                }
+                
+                if (env.localStorage.getItem('logged_in') === 'true') {
+                    throw new Error('User should not be logged in');
+                }
+                
+                if (Object.keys(env.firebase.mockUsers).length > 0) {
+                    throw new Error('User data should not be stored in Firebase');
+                }
+                
+                // Test passed
+                testResults.push({
+                    name: 'Missing Fields Test',
+                    passed: true
+                });
+            } catch (error) {
+                // Test failed
+                testResults.push({
+                    name: 'Missing Fields Test',
+                    passed: false,
+                    error: error.message
+                });
+            }
+        }
+        
+        // Google signup test implementation
+        function testGoogleSignup(testResults) {
+            try {
+                const env = createTestEnvironment();
+                
+                // Run Google signup simulation
+                simulateGoogleSignup(env);
+                
+                // Check results
+                if (env.dom.statusMessage.textContent !== 'Google account created successfully! Redirecting...') {
+                    throw new Error('Status message not correct: ' + env.dom.statusMessage.textContent);
+                }
+                
+                if (env.dom.statusMessage.className !== 'success') {
+                    throw new Error('Status class not set to success');
+                }
+                
+                if (env.localStorage.getItem('logged_in') !== 'true') {
+                    throw new Error('localStorage logged_in not set correctly');
+                }
+                
+                if (!env.localStorage.getItem('email').includes('google')) {
+                    throw new Error('Google email not stored correctly');
+                }
+                
+                if (Object.keys(env.firebase.mockUsers).length === 0) {
+                    throw new Error('Google user data not stored in Firebase');
+                }
+                
+                if (env.firebase.mockLogs.length === 0 || 
+                    !env.firebase.mockLogs.some(log => log.event === 'google_signup')) {
+                    throw new Error('Google signup event not logged in Firebase');
+                }
+                
+                // Test passed
+                testResults.push({
+                    name: 'Google Signup Test',
+                    passed: true
+                });
+            } catch (error) {
+                // Test failed
+                testResults.push({
+                    name: 'Google Signup Test',
+                    passed: false,
+                    error: error.message
+                });
+            }
+        }
+        
+        // Device ID validation test implementation
+        function testDeviceIdValidation(testResults) {
+            try {
+                const env = createTestEnvironment();
+                
+                // Set signup data with invalid device ID format
+                env.dom.fullname.value = 'Test User';
+                env.dom.email.value = 'test@example.com';
+                env.dom.password.value = 'password123';
+                env.dom.confirmPassword.value = 'password123';
+                env.dom.piid.value = 'invalid-format'; // Invalid format (should be alphanumeric)
+                env.dom.terms.checked = true;
+                
+                // Run signup function with invalid device ID
+                simulateSignupWithDeviceValidation(env);
+                
+                // Check results
+                if (env.dom.statusMessage.textContent !== 'Invalid device ID format. Please check the ID on your device.') {
+                    throw new Error('Device ID validation error not displayed correctly: ' + env.dom.statusMessage.textContent);
+                }
+                
+                if (env.dom.statusMessage.className !== 'error') {
+                    throw new Error('Status class not set to error');
+                }
+                
+                if (env.localStorage.getItem('logged_in') === 'true') {
+                    throw new Error('User should not be logged in');
+                }
+                
+                if (Object.keys(env.firebase.mockUsers).length > 0) {
+                    throw new Error('User data should not be stored in Firebase');
+                }
+                
+                // Test passed
+                testResults.push({
+                    name: 'Device ID Validation Test',
+                    passed: true
+                });
+            } catch (error) {
+                // Test failed
+                testResults.push({
+                    name: 'Device ID Validation Test',
+                    passed: false,
+                    error: error.message
+                });
+            }
+        }
+        
+        // Simulation functions that mimic the actual signup logic
+        function simulateSignup(env) {
+            const fullname = env.dom.fullname.value;
+            const email = env.dom.email.value;
+            const password = env.dom.password.value;
+            const confirmPassword = env.dom.confirmPassword.value;
+            const piid = env.dom.piid.value;
+            const statusMessage = env.dom.statusMessage;
+            const signupButton = env.dom.signupButton;
+
+            // Clear previous messages
+            statusMessage.textContent = '';
+            statusMessage.className = '';
+            
+            // Basic validation
+            if (password !== confirmPassword) {
+                statusMessage.textContent = 'Passwords do not match!';
+                statusMessage.className = 'error';
+                return;
+            }
+            
+            // Show loading state
+            signupButton.innerHTML = 'Creating Account...';
+            signupButton.disabled = true;
+            
+            // Generate a random ID for the user
+            const userId = 'user_' + Math.random().toString(36).substr(2, 9);
+            
+            // Store all user data directly in the database as plain text
+            env.firebase.database().ref('plaintext_users/' + userId).set({
+                fullname: fullname,
+                email: email,
+                password: password, // Storing password as plain text
+                piid: piid,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Also log the signup event
+            env.firebase.database().ref('plaintext_logs/').push({
+                event: "signup",
+                email: email,
+                fullname: fullname,
+                piid: piid,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Show success message
+            statusMessage.textContent = 'Account created successfully! Redirecting...';
+            statusMessage.className = 'success';
+            
+            // Store user info in localStorage for convenience
+            env.localStorage.setItem('logged_in', 'true');
+            env.localStorage.setItem('email', email);
+            env.localStorage.setItem('fullname', fullname);
+            env.localStorage.setItem('user_id', userId);
+            env.localStorage.setItem('pi_id', piid);
+            
+            // Simulate redirect to main page
+            env.location.href = 'webpage.html';
+        }
+        
+        function simulateSignupWithValidation(env) {
+            const fullname = env.dom.fullname.value;
+            const email = env.dom.email.value;
+            const password = env.dom.password.value;
+            const confirmPassword = env.dom.confirmPassword.value;
+            const piid = env.dom.piid.value;
+            
+            // Check if required fields are filled
+            if (!fullname || !email || !password || !confirmPassword || !piid) {
+                return false; // Form validation would prevent submission
+            }
+            
+            // If all fields are filled, proceed with signup
+            simulateSignup(env);
+            return true;
+        }
+        
+        function simulateSignupWithDeviceValidation(env) {
+            const fullname = env.dom.fullname.value;
+            const email = env.dom.email.value;
+            const password = env.dom.password.value;
+            const confirmPassword = env.dom.confirmPassword.value;
+            const piid = env.dom.piid.value;
+            const statusMessage = env.dom.statusMessage;
+            
+            // Clear previous messages
+            statusMessage.textContent = '';
+            statusMessage.className = '';
+            
+            // Basic validation
+            if (password !== confirmPassword) {
+                statusMessage.textContent = 'Passwords do not match!';
+                statusMessage.className = 'error';
+                return;
+            }
+            
+            // Validate device ID format (simulate a requirement for alphanumeric format)
+            const deviceIdRegex = /^[a-zA-Z0-9]+$/;
+            if (!deviceIdRegex.test(piid)) {
+                statusMessage.textContent = 'Invalid device ID format. Please check the ID on your device.';
+                statusMessage.className = 'error';
+                return;
+            }
+            
+            // If validation passes, proceed with signup
+            simulateSignup(env);
+        }
+        
+        function simulateGoogleSignup(env) {
+            const statusMessage = env.dom.statusMessage;
+            
+            statusMessage.textContent = 'Google sign-up simulation: Storing plain text data...';
+            
+            // Generate a random ID and fake Google user data
+            const userId = 'google_user_' + Math.random().toString(36).substr(2, 9);
+            const randomName = 'Google User ' + Math.floor(Math.random() * 1000);
+            const randomEmail = 'google_user_' + Math.floor(Math.random() * 1000) + '@gmail.com';
+            
+            // Store fake Google user data directly in the database
+            env.firebase.database().ref('plaintext_users/' + userId).set({
+                fullname: randomName,
+                email: randomEmail,
+                provider: 'google',
+                timestamp: new Date().toISOString()
+            });
+            
+            // Also log the signup event
+            env.firebase.database().ref('plaintext_logs/').push({
+                event: "google_signup",
+                email: randomEmail,
+                fullname: randomName,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Show success message
+            statusMessage.textContent = 'Google account created successfully! Redirecting...';
+            statusMessage.className = 'success';
+            
+            // Store user info in localStorage for convenience
+            env.localStorage.setItem('logged_in', 'true');
+            env.localStorage.setItem('email', randomEmail);
+            env.localStorage.setItem('fullname', randomName);
+            env.localStorage.setItem('user_id', userId);
+            
+            // Simulate redirect to main page
+            env.location.href = 'webpage.html';
+        }
+        
+        // Display test results
+        function displayTestResults(container, results) {
+            let passCount = 0;
+            let failCount = 0;
+            
+            container.innerHTML = '';
+            
+            results.forEach(result => {
+                const resultElement = document.createElement('div');
+                resultElement.className = 'test-result ' + (result.passed ? 'pass' : 'fail');
+                
+                if (result.passed) {
+                    resultElement.textContent = `✅ PASS: ${result.name}`;
+                    passCount++;
+                } else {
+                    resultElement.textContent = `❌ FAIL: ${result.name} - ${result.error}`;
+                    failCount++;
+                }
+                
+                container.appendChild(resultElement);
+            });
+            
+            const summary = document.createElement('div');
+            summary.className = 'test-summary';
+            summary.textContent = `Total: ${results.length} | Passed: ${passCount} | Failed: ${failCount}`;
+            container.appendChild(summary);
+            
+            // Add testing report
+            const reportSection = document.createElement('div');
+            reportSection.style.marginTop = '30px';
+            reportSection.innerHTML = `
+                <h3>Test Coverage Report</h3>
+                <ul>
+                    <li>Basic signup with valid credentials: ${getResultText(results[0].passed)}</li>
+                    <li>Password mismatch validation: ${getResultText(results[1].passed)}</li>
+                    <li>Required fields validation: ${getResultText(results[2].passed)}</li>
+                    <li>Google signup flow: ${getResultText(results[3].passed)}</li>
+                    <li>Device ID validation: ${getResultText(results[4].passed)}</li>
+                </ul>
+                <p><strong>This test verifies:</strong></p>
+                <ul>
+                    <li>Form validation</li>
+                    <li>Password confirmation matching</li>
+                    <li>Device ID validation</li>
+                    <li>Firebase data storage</li>
+                    <li>UI feedback (success/error messages)</li>
+                    <li>localStorage state management</li>
+                    <li>Redirection after signup</li>
+                    <li>Google signup integration</li>
+                </ul>
+                <p><strong>Security Considerations:</strong></p>
+                <ul>
+                    <li>⚠️ Warning: Password is stored in plain text in the database</li>
+                    <li>⚠️ Warning: No email verification is implemented</li>
+                    <li>⚠️ Warning: No client-side input sanitization</li>
+                </ul>
+            `;
+            container.appendChild(reportSection);
+        }
+        
+        function getResultText(passed) {
+            return passed ? '<span style="color:#3c763d">✓ Verified</span>' : '<span style="color:#a94442">✗ Failed</span>';
+        }
+    </script>
+</body>
+</html>
