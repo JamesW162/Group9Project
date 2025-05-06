@@ -1,7 +1,4 @@
 # Raspberry Pi Camera Livestream to Firebase
-
-This Python script implements a livestreaming system that captures video from a Raspberry Pi camera and sends the frames to Firebase Realtime Database. The system is designed for low-bandwidth applications, such as a BSL (British Sign Language) translator.
-
 ## Configuration Parameters
 
 ```python
