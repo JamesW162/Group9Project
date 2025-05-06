@@ -283,16 +283,3 @@ This final section:
 2. Checks if the user pressed 'e' to exit
 3. Clears the output file and performs logout on exit
 4. Releases the camera and closes all windows when done
-
-## Summary
-
-The `inference_classifier.py` script:
-1. Uses a webcam to capture video of hand gestures
-2. Detects hand landmarks using MediaPipe
-3. Applies a pre-trained model to classify the gestures as letters
-4. Builds words from consistent letter detections
-5. Uses a dictionary to suggest complete words
-6. Saves detected words to a local file and uploads them to a server
-7. Provides visual feedback by showing the hand landmarks on screen
-
-This creates a real-time sign language to text conversion system, which could be used for accessibility or communication applications.
