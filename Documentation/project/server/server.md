@@ -1,6 +1,4 @@
-# BSL Interpreter Server Explanation
-
-This document explains the `server.js` file, which serves as the backend server for the British Sign Language (BSL) interpreter application.
+# Server.js documentation
 
 ## Overview
 

@@ -1,5 +1,4 @@
-# Raspberry Pi Button Control for BSL Bridge
-
+# Raspberry Pi Button Control for BSL translator
 ## Hardware Components
 
 The script interfaces with:

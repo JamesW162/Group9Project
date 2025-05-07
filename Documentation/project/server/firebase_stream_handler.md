@@ -1,7 +1,4 @@
-# Firebase Stream Handler for BSL Translation
-
-This Python script provides tools for managing and interacting with video streams stored in Firebase Realtime Database. It offers functionality to create test streams, view existing streams, and list all streams in the database - primarily designed to work with the BSL (British Sign Language) Translation system.
-
+# firebase_stream_handler.py documentation
 ## Base64 Image Conversion Functions
 
 The script includes utility functions to convert between base64 encoded strings (used in Firebase) and OpenCV image objects:

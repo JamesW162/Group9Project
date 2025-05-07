@@ -1,6 +1,4 @@
-# BSL Bridge - Sign Up Page
-
-This project implements a sign-up page for the BSL Bridge platform, where users can create an account via a regular sign-up form or a simulated Google sign-up. User data is stored in Firebase Realtime Database.
+# signup.html documentation
 
 ## Features
 

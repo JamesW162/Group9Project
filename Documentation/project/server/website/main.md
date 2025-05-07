@@ -1,4 +1,4 @@
-# BSL Bridge Main Page Explanation
+# main.html documentation
 
 This file contains the code for the main landing page of the BSL Bridge application, which showcases the project's mission, features, and social impact related to British Sign Language translation.
 

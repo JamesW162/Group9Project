@@ -1,5 +1,4 @@
-# BSL Translator - Real-time Hand Gesture Recognition with Firebase Integration
-
+# BSL bridge implementation documentation
 This Python script implements a real-time British Sign Language (BSL) gesture recognition system. It uses OpenCV, MediaPipe, and a pre-trained ML model to predict hand gestures and convert them into text. The results are streamed live and synchronized with a Firebase Realtime Database.
 
 ---

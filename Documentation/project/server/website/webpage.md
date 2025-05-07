@@ -1,8 +1,4 @@
-# BSL Bridge Translation Website Explanation
-
-This file contains the code for a web application that provides British Sign Language (BSL) translation services through live video streaming. The application connects to a Firebase backend to display sign language streams and provides real-time text translations of the signed content.
-
-## Key Components
+# webpage.html documentation
 
 ### 1. User Authentication System
 

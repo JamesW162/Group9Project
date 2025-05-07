@@ -1,7 +1,4 @@
-# BSL Interpreter Troubleshooter Tool
-
-This Python script (`fix.py`) serves as a diagnostic tool for the BSL (British Sign Language) interpreter system. It helps identify and resolve common setup issues by checking system requirements, dependencies, and configuration files.
-
+# fix.py documentation
 ## Colored Output Functionality
 
 The script includes a utility function to print colored status messages for better readability:
