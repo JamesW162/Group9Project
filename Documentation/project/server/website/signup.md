@@ -115,8 +115,6 @@ firebase.database().ref('plaintext_users/' + userId).set({
     timestamp: new Date().toISOString()
 })
 ```
-Stores user data in Firebase Realtime Database with passwords in plain text (a significant security issue).
-
 ### Success Handling
 ```javascript
 // Show success message
@@ -140,7 +138,7 @@ After successful registration:
 2. Stores user information in browser's localStorage
 3. Redirects to the main page after 1.5 seconds
 
-### Google Sign-Up Simulation
+### Google Sign-Up 
 ```javascript
 document.getElementById('google-signup').addEventListener('click', function() {
     // Generate a random ID and fake Google user data
@@ -148,7 +146,3 @@ document.getElementById('google-signup').addEventListener('click', function() {
     const randomName = 'Google User ' + Math.floor(Math.random() * 1000);
     const randomEmail = 'google_user_' + Math.floor(Math.random() * 1000) + '@gmail.com';
 ```
-The Google sign-up button doesn't actually implement OAuth but instead:
-1. Creates mock user data with random name and email
-2. Stores this data in Firebase
-3. Simulates a successful Google sign-up
