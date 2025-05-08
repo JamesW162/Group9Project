@@ -136,9 +136,8 @@ To train your own model:
 The data flows from the Raspberry Pi to Firebase, then to a PC/Laptop where the BSL is translated to text. The processed data is sent to:
 
 1. The University's Cloud Webserver (backend for website and mobile interface)
-2. ThingsBoard for output on the Raspberry Pi's speaker
+2. Locally hosted on JS server
 
-![System Architecture](https://github.com/user-attachments/assets/803f0839-40de-431e-8479-3a3a09b21124)
 
 ## Firebase Integration
 
@@ -150,8 +149,6 @@ The system uses Firebase for real-time data storage and synchronization:
 The current web interface looks like this:
 ![Web Interface](https://github.com/user-attachments/assets/9ce45291-fea6-4419-8a29-9f95c9cedc46)
 
-Server structure:
-![Server Structure](https://github.com/user-attachments/assets/54ef874d-4d4b-492b-90f5-ad7d237ea908)
 
 ## Video Tutorial for Reference
 
@@ -163,3 +160,30 @@ Server structure:
 - Faster connection speeds
 - Expand supported gestures
 - Implement sentence construction
+
+  # Documentation
+  # Documentation
+
+## Raspberry Pi
+- [Live Stream Pi Code](https://github.com/JamesW162/Group9Project/blob/main/Documentation/RasberryPi/live_stream_pi_code.md)
+- [On/Off Button Pi Code](https://github.com/JamesW162/Group9Project/blob/main/Documentation/RasberryPi/on_off_buttom_pi_code.md)
+
+## Training Process
+- [Inference Classifier](https://github.com/JamesW162/Group9Project/blob/main/Documentation/Training_process/InferenceClassifier.md)
+- [Autocorrect](https://github.com/JamesW162/Group9Project/blob/main/Documentation/Training_process/autocorrect.md)
+- [Collect Images](https://github.com/JamesW162/Group9Project/blob/main/Documentation/Training_process/collect_images.md)
+- [Create Dataset](https://github.com/JamesW162/Group9Project/blob/main/Documentation/Training_process/createdataset.md)
+- [Train Classifier](https://github.com/JamesW162/Group9Project/blob/main/Documentation/Training_process/train_classifier.md)
+
+## Project Server
+- [BSL Bridge Integration](https://github.com/JamesW162/Group9Project/blob/main/Documentation/project/server/bsl_bridge_intergration.md)
+- [Firebase Stream Handler](https://github.com/JamesW162/Group9Project/blob/main/Documentation/project/server/firebase_stream_handler.md)
+- [Fix](https://github.com/JamesW162/Group9Project/blob/main/Documentation/project/server/fix.md)
+- [Fix 2](https://github.com/JamesW162/Group9Project/blob/main/Documentation/project/server/fix2.md)
+- [Server](https://github.com/JamesW162/Group9Project/blob/main/Documentation/project/server/server.md)
+
+### Website
+- [Login](https://github.com/JamesW162/Group9Project/blob/main/Documentation/project/server/website/login.md)
+- [Main](https://github.com/JamesW162/Group9Project/blob/main/Documentation/project/server/website/main.md)
+- [Signup](https://github.com/JamesW162/Group9Project/blob/main/Documentation/project/server/website/signup.md)
+- [Webpage](https://github.com/JamesW162/Group9Project/blob/main/Documentation/project/server/website/webpage.md)
