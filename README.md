@@ -161,8 +161,7 @@ The current web interface looks like this:
 - Expand supported gestures
 - Implement sentence construction
 
-  # Documentation
-  # Documentation
+# Documentation
 
 ## Raspberry Pi
 - [Live Stream Pi Code](https://github.com/JamesW162/Group9Project/blob/main/Documentation/RasberryPi/live_stream_pi_code.md)
