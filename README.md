@@ -1,232 +1,165 @@
-# BSL Bridge
-<img src="https://github.com/JamesW162/Group9Project/blob/main/project/server/website/logo.png" alt="BSL Translator Logo" width="300">
-A real-time British Sign Language (BSL) translation system using machine learning, computer vision, and cloud integration. This project uses MediaPipe for hand detection and a custom ML model to classify hand gestures, converting them into text through real-time video processing.
-Built with Python 3.11.9
-Demo
-Show Image
-System Architecture
-Our translation system follows this process flow:
+# SIGN LANGUAGE TRANSLATOR
 
-Capture: Raspberry Pi camera captures hand gestures
-Transmit: Video frames are sent to Firebase in real-time
-Process: ML model processes frames to detect and classify gestures
-Translate: Signs are converted to text with auto-correction
-Display: Results appear on web interface and can be sent back to the Pi
+This project uses Mediapipe for hand detection and ML model to classify gestures. The system uses real-time video input from a camera to detect hand landmarks and predict what letter the hand gesture relates to. It is built using version 3.11.9 of Python.
 
-For detailed architecture information, see our System Design Documentation.
-Project Contents
+![Logo](https://github.com/JamesW162/Group9Project/blob/main/project/server/website/logo.png)
 
-/project/server - Main server implementation
+## Installation
 
-Express.js backend
-API endpoints for BSL translation
-Firebase integration
+### Installation on a laptop/pc
 
-
-/project/server/BSL_bridge_integration.py - Core ML processing script
-/project/server/website - Frontend website files
-/RaspberryPi - Raspberry Pi implementation scripts
-/documentation - Project documentation
-
-User Guide - How to use the system
-Technical Overview - Technical details
-Installation Guide - Detailed setup instructions
-API Documentation - API reference
-
-
-
-Installation
-Prerequisites
-
-Python 3.11.9
-Node.js & npm
-Git
-Firebase account
-
-PC/Laptop Setup
-
-Clone the repository:
-
-bashgit clone https://github.com/JamesW162/Group9Project
+```
+git clone https://github.com/JamesW162/Group9Project
 cd Group9Project
+```
 
-Set up the Python environment:
+Open VS code in the Group9Project and run these commands in the terminal:
 
-bashpython -m venv myenv
-myenv\Scripts\activate  # On Windows
-source myenv/bin/activate  # On macOS/Linux
+```
+python -m venv myenv
+myenv\Scripts\activate
 pip install -r requirements.txt
-
-Set up the server:
-
-bashcd project/server
+cd project
+cd server
 npm install
-npm install firebase express body-parser cors
+npm install firebase
+npm install express body-parser cors
+```
 
-Add Firebase credentials:
+You then need to add `bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json` from Firebase.
 
-Download bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json following instructions below
-Place it in the Group9Project/project/server directory
+#### Steps to Download Your Firebase Admin SDK JSON File
+- Go to Firebase Console: Visit Firebase Console and log in.
+- Select Your Project: Click on the project associated with bsltranslator-93f00.
+- Open Project Settings:
+  - Click on the ⚙️ gear icon in the left sidebar.
+  - Choose Project settings.
+- Navigate to Service Accounts:
+  - In the Project settings, select the Service accounts tab.
+  - Scroll down and find Firebase Admin SDK.
+- Generate a New Private Key:
+  - Click Generate new private key.
+  - This will download a JSON file (firebase-adminsdk-xxxxx.json).
 
+**Important Notes**
+- Handle with care! This file contains sensitive credentials. Do not expose it publicly.
+- Use in your backend: Place it in a secure location where only authorized applications can access it.
+- **MAKE SURE** to save it as `bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json`
+- **MAKE SURE** IT IS SAVED IN `Group9Project/project/server`
 
-Verify installation:
+To make sure everything is installed, run:
 
-bashpython fix.py
+```
+python fix.py
+```
 
-Start the server:
+If there are any missing dependencies, type `y` to fix them. OpenCV sometimes has issues, so you may need to run `pip install opencv-python`. Similarly, scikit-learn can be problematic, so try `pip install scikit-learn` if needed.
 
-bashnode server.js
-Firebase Credentials Setup
+To start running the server:
+```
+node server.js
+```
 
-Go to Firebase Console and log in
-Select the project associated with bsltranslator-93f00
-Click the ⚙️ gear icon → Project settings
-Navigate to the Service accounts tab
-Under Firebase Admin SDK, click "Generate new private key"
-Save the downloaded JSON file as bsltranslator-93f00-firebase-adminsdk-fbsvc-55978db132.json
-Place this file in Group9Project/project/server
+### Installation on the Raspberry Pi
 
+First, set up the Pi as shown below:
+- Camera plugged into the Raspberry Pi camera pins
+- Red LED button connected to port D2
+- Grove-LCD RGB Backlight connected to port I2C
 
-IMPORTANT: This file contains sensitive credentials. Do not expose it publicly.
+![Raspberry Pi Setup](https://github.com/user-attachments/assets/61e809d4-83b1-43b0-ab5d-4606c24fc7a9)
 
-Raspberry Pi Setup
+The only files you need from the repository are in the **`/RaspberryPi`** folder:
+- `live_stream_pi_code.py`
+- `on_off_button_pi_code.py`
+- `requirements.txt`
 
-Set up the hardware:
+```
+pip install -r requirements.txt
+```
 
-Connect camera to Raspberry Pi camera pins
-Connect red LED button to port D2
-Connect Grove-LCD RGB Backlight to port I2C
+Open and run `on_off_button_pi_code.py`
 
-Show Image
-Copy required files from repository:
+**NOTE: PLEASE PUT THE `index.html` AND `logo.png` INTO A FOLDER CALLED `templates`**
 
-/RaspberryPi/live_stream_pi_code.py
-/RaspberryPi/on_off_button_pi_code.py
-/RaspberryPi/requirements.txt
+## How Everything Works
 
+### Server.js
+The website backend runs using Express.js to handle communication between the BSL interpreter Python scripts and the front-end website. It manages API endpoints that read and update the translation data and provide error messages when problems occur.
 
-Install dependencies:
+### BSL_bridge_integration.py
+This Python script implements real-time British Sign Language gesture recognition using OpenCV, MediaPipe, and a pre-trained ML model. It detects hand landmarks (21 points per hand) and predicts hand gestures, converting them to text through these steps:
+1. Hand detection using MediaPipe
+2. Landmark extraction and classification
+3. Gesture stabilization to prevent duplicate predictions
+4. Auto-correction to improve word prediction
 
-bashpip install -r requirements.txt
+### Firebase_stream_handler.py
+This script handles the conversion of base64-encoded images back to actual images for display on the website and processing by the BSL translator. It manages two-way communication between the client computer and Firebase.
 
-Run the control script:
-
-bashpython on_off_button_pi_code.py
-NOTE: Please create a folder called templates and place index.html and logo.png inside it.
-How Everything Works
-1. Data Collection & Model Training
-To build your own model:
-
-Run collect_images.py:
-
-Captures hand gestures for training the ML model
-Currently configured for 3 letters (A, B, L)
-Customize number_of_classes and data_dict path as needed
-
-
-Run process_data_for_training.py:
-
-Processes collected data for ML model training
-
-
-Run train_classifier.py:
-
-Creates model.p file needed for inference
-
-
-
-For more details, see our Machine Learning Documentation.
-2. BSL Translation Process
-The translation involves these key components:
-Server-side Processing
-The BSL_bridge_integration.py script:
-
-Uses MediaPipe to detect hand landmarks (21 points per hand)
-Applies our trained model to classify gestures
-Implements gesture stabilization for accurate readings
-Provides auto-correction for better text prediction
-Synchronizes with Firebase for real-time updates
-
-Cloud Integration
-Our Firebase implementation:
-
-Stores video frames from the Raspberry Pi
-Maintains stream metadata and status information
-Secures access with unique device IDs (PIIDs)
-Supports real-time data synchronization
-
-Show Image
-Web Interface
-The web application:
-
-Authenticates users securely
-Displays live video streams
-Shows translated text in real-time
-Provides controls for stream management
-Includes loading animations and error handling
-
-Show Image
-3. Raspberry Pi Implementation
+### Raspberry Pi Implementation
 The Raspberry Pi runs two main scripts:
-
-on_off_button_pi_code.py: Controls the hardware interface
-
-Initializes the LCD display
-Monitors button presses
-Starts/stops the livestream
-
-
-live_stream_pi_code.py: Handles video streaming
-
-Captures frames from the camera
-Compresses and encodes frames to base64
-Uploads frames to Firebase
-Manages stream lifetime and resources
-
-
+- `on_off_button_pi_code.py`: Controls the LCD and camera based on button presses
+- `live_stream_pi_code.py`: Captures and streams video frames to Firebase
 
 Configuration parameters:
-pythonFRAME_RATE = 3  # Frames per second (do not exceed 5)
-RESOLUTION = (320, 240)  # Video resolution
+```python
+FRAME_RATE = 3  # Do not exceed 5 FPS due to storage limitations
+RESOLUTION = (320, 240)  # Lower resolution for better performance
 QUALITY = 20  # JPEG compression quality
 MAX_STREAM_TIME = 300  # Maximum streaming time (5 minutes)
-4. System Architecture Diagrams
-Data flow through our system:
-Show Image
-Alternative cloud processing model:
-Show Image
+```
+
+### Website Interface
+The web application includes:
+- Authentication pages (login, signup)
+- Main translator interface (webpage.html)
+- Stream connection and management
+- Real-time translation display
+
+### BSL Letter Chart
+![BSL Fingerspelling Chart](https://imgs.search.brave.com/DKomfn_cPKzVi7KigGeY5d0Jdn0WK72m8gxgMzOFH6M/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9hY2Nl/c3Nic2wuY29tL3dw/LWNvbnRlbnQvdXBs/b2Fkcy8yMDIyLzEx/LzIuYWNjZXNzYnNs/LUZpbmdlcnNwZWxs/aW5nLXJpZ2h0LWhh/bmQtMS5qcGc)
+
+## Training Your Own Model
+
+To train your own model:
+1. Run `collect_images.py` to capture hand gestures
+   - Configure `number_of_classes` for the number of letters (currently 3)
+   - Update `data_dict` path to your computer
+2. Run `process_data_for_training.py` to prepare the data
+3. Run `train_classifier.py` to create the model.p file
+4. Run `inference_classifier.py` to test the model
+   - Update `labels_dict` to match your classes (currently `{0: 'A', 1: 'B', 2: 'L'}`)
+
+## System Architecture
+
+The data flows from the Raspberry Pi to Firebase, then to a PC/Laptop where the BSL is translated to text. The processed data is sent to:
+
+1. The University's Cloud Webserver (backend for website and mobile interface)
+2. ThingsBoard for output on the Raspberry Pi's speaker
+
+![System Architecture](https://github.com/user-attachments/assets/803f0839-40de-431e-8479-3a3a09b21124)
+
+## Firebase Integration
+
+The system uses Firebase for real-time data storage and synchronization:
+![Firebase Structure](https://github.com/user-attachments/assets/f8e41ac4-51ef-4f1f-825d-01f8e867b1da)
+
+## Web Interface
+
+The current web interface looks like this:
+![Web Interface](https://github.com/user-attachments/assets/9ce45291-fea6-4419-8a29-9f95c9cedc46)
+
 Server structure:
-Show Image
-BSL Reference
-Use this BSL fingerspelling chart for reference:
-Show Image
-Video Tutorial
-For additional help, watch our reference tutorial:
-Show Image
-Current Features
+![Server Structure](https://github.com/user-attachments/assets/54ef874d-4d4b-492b-90f5-ad7d237ea908)
 
-✅ Real-time hand gesture detection
-✅ Translation of BSL fingerspelling to text
-✅ Auto-correction for improved accuracy
-✅ Cloud-based video streaming
-✅ Web interface for viewing translations
-✅ Raspberry Pi integration with hardware feedback
+## Video Tutorial for Reference
 
-Future Development
+[![Watch the tutorial on YouTube](https://img.youtube.com/vi/MJCSjXepaAM/0.jpg)](https://www.youtube.com/watch?v=MJCSjXepaAM)
 
-Improve the AI model accuracy
-Optimize connection speed
-Expand gesture vocabulary beyond fingerspelling
-Implement sentence construction
-Add mobile application support
+## Future Development
 
-License
-This project is licensed under the MIT License - see the LICENSE file for details.
-Acknowledgments
-
-MediaPipe team for their hand tracking technology
-Firebase for cloud infrastructure
-All contributors to the BSL translation project
-
-
-For questions or support, please open an issue on this repository.
+- Improve the AI model
+- Faster connection speeds
+- Expand supported gestures
+- Implement sentence construction
